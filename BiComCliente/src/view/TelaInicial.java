@@ -14,6 +14,13 @@ public class TelaInicial extends javax.swing.JFrame {
     /**
      * Creates new form TelaInicial
      */
+    public static String ip_a;
+    public static String ip_b;
+    public static String ip_c;
+    public static int porta_a;
+    public static int porta_b;
+    public static int porta_c;
+    
     public TelaInicial() {
         initComponents();
     }
@@ -33,7 +40,7 @@ public class TelaInicial extends javax.swing.JFrame {
         porta_A = new javax.swing.JTextField();
         IP_C = new javax.swing.JTextField();
         porta_C = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        ok = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -45,10 +52,17 @@ public class TelaInicial extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Tela Inicial");
+        setResizable(false);
 
         jLabel9.setText("Porta");
 
-        jButton1.setText("OK");
+        ok.setText("OK");
+        ok.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("IP");
 
@@ -74,7 +88,7 @@ public class TelaInicial extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(172, 172, 172)
-                        .addComponent(jButton1)
+                        .addComponent(ok)
                         .addGap(115, 115, 115))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(61, 61, 61)
@@ -152,12 +166,27 @@ public class TelaInicial extends javax.swing.JFrame {
                     .addComponent(IP_C, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(porta_C, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addComponent(ok)
                 .addGap(13, 13, 13))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void okActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okActionPerformed
+        TelaInicial.porta_a = Integer.parseInt(this.porta_A.getText());
+        TelaInicial.porta_b = Integer.parseInt(this.porta_B.getText());
+        TelaInicial.porta_c = Integer.parseInt(this.porta_C.getText());
+        
+        TelaInicial.ip_a = this.IP_A.getText();
+        TelaInicial.ip_b = this.IP_B.getText();
+        TelaInicial.ip_c = this.IP_C.getText();
+        
+        this.setVisible(false);
+        TelaLogin.telaLogin = new TelaLogin();
+        TelaLogin.telaLogin.setVisible(true);
+    }//GEN-LAST:event_okActionPerformed
 
     /**
      * @param args the command line arguments
@@ -198,7 +227,6 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JTextField IP_A;
     private javax.swing.JTextField IP_B;
     private javax.swing.JTextField IP_C;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -208,6 +236,7 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JButton ok;
     private javax.swing.JTextField porta_A;
     private javax.swing.JTextField porta_B;
     private javax.swing.JTextField porta_C;

@@ -5,6 +5,12 @@
  */
 package view;
 
+import app.Cliente;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author User
@@ -14,6 +20,7 @@ public class TelaLogin extends javax.swing.JFrame {
     /**
      * Creates new form TelaLogin
      */
+    public static TelaLogin telaLogin;
     public TelaLogin() {
         initComponents();
     }
@@ -104,11 +111,25 @@ public class TelaLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_senhaActionPerformed
 
     private void cadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarActionPerformed
-        //implementar
+        this.setVisible(false);
+        TelaCadastro.telaCadastro = new TelaCadastro();
+        TelaCadastro.telaCadastro.setVisible(true);
     }//GEN-LAST:event_cadastrarActionPerformed
 
     private void entrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entrarActionPerformed
-        //implementar
+        Cliente c = new Cliente();
+        try {
+            boolean compA = c.login(login.getText(), senha.getText(), TelaInicial.ip_a, TelaInicial.porta_a);
+            boolean compB = c.login(login.getText(), senha.getText(), TelaInicial.ip_b, TelaInicial.porta_b);
+            boolean compC = c.login(login.getText(), senha.getText(), TelaInicial.ip_c, TelaInicial.porta_c);
+            if(compA || compB || compC){
+                this.setVisible(false);
+                MenuUsuario.menu = new MenuUsuario();
+                MenuUsuario.menu.setVisible(true);
+            }
+        } catch (RemoteException | NotBoundException ex) {
+            Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_entrarActionPerformed
 
     /**

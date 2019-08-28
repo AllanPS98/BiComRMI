@@ -14,6 +14,7 @@ public class MenuUsuario extends javax.swing.JFrame {
     /**
      * Creates new form MenuUsuario
      */
+    public static MenuUsuario menu;
     public MenuUsuario() {
         initComponents();
     }
@@ -28,6 +29,8 @@ public class MenuUsuario extends javax.swing.JFrame {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Menu do Usuário");
+        setResizable(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -41,6 +44,7 @@ public class MenuUsuario extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**

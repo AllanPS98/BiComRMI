@@ -5,6 +5,13 @@
  */
 package view;
 
+import app.Cliente;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author User
@@ -14,6 +21,7 @@ public class TelaCadastro extends javax.swing.JFrame {
     /**
      * Creates new form TelaCadastro
      */
+    public static TelaCadastro telaCadastro;
     public TelaCadastro() {
         initComponents();
     }
@@ -27,6 +35,10 @@ public class TelaCadastro extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
+        buttonGroup3 = new javax.swing.ButtonGroup();
+        buttonGroup4 = new javax.swing.ButtonGroup();
         nome = new javax.swing.JTextField();
         cpf = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -37,8 +49,14 @@ public class TelaCadastro extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         cadastrar = new javax.swing.JButton();
         voltar = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        norte = new javax.swing.JRadioButton();
+        centro = new javax.swing.JRadioButton();
+        sul = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Tela de Cadastro");
+        setResizable(false);
 
         jLabel1.setText("Nome");
 
@@ -62,41 +80,72 @@ public class TelaCadastro extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setText("Selecione sua região");
+
+        buttonGroup1.add(norte);
+        norte.setText("Norte - Nordeste");
+
+        buttonGroup1.add(centro);
+        centro.setText("Centro-Oeste");
+
+        buttonGroup1.add(sul);
+        sul.setText("Sul - Sudeste");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(70, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap(44, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel4)
-                    .addComponent(jLabel3)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(voltar)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cadastrar))
-                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(cpf, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(nome, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(senha, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(confirmaSenha, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2))
+                        .addGap(154, 154, 154)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(norte)
+                            .addComponent(centro)
+                            .addComponent(sul)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(nome, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(confirmaSenha, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
+                                .addComponent(senha, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(cpf, javax.swing.GroupLayout.Alignment.LEADING)))
+                        .addGap(175, 175, 175))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(voltar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cadastrar)))
                 .addGap(65, 65, 65))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addComponent(jLabel1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(nome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cpf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel3)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2)
+                    .addComponent(norte))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cpf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(centro))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel3))
+                    .addComponent(sul, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(senha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -107,23 +156,55 @@ public class TelaCadastro extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cadastrar)
                     .addComponent(voltar))
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void cadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarActionPerformed
-        //implementar
+        if(this.senha.getText().equals(this.confirmaSenha.getText())){
+            Cliente c = new Cliente();
+            String regiao;
+            String resultado = "";
+            if(norte.isSelected()){
+                regiao = "Norte - Nordeste";
+                try {
+                    resultado = c.cadastrarUsuario(nome.getText(), cpf.getText(), senha.getText(), regiao, TelaInicial.ip_a ,
+                            TelaInicial.porta_a);
+                } catch (RemoteException | NotBoundException ex) {
+                    Logger.getLogger(TelaCadastro.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }else if(centro.isSelected()){
+                regiao = "Centro-Oeste";
+                try {
+                    resultado = c.cadastrarUsuario(nome.getText(), cpf.getText(), senha.getText(), regiao, TelaInicial.ip_b ,
+                            TelaInicial.porta_b);
+                } catch (RemoteException | NotBoundException ex) {
+                    Logger.getLogger(TelaCadastro.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }else if(sul.isSelected()){
+                regiao = "Sul - Suldeste";
+                try {
+                    resultado = c.cadastrarUsuario(nome.getText(), cpf.getText(), senha.getText(), regiao, TelaInicial.ip_c ,
+                            TelaInicial.porta_c);
+                } catch (RemoteException | NotBoundException ex) {
+                    Logger.getLogger(TelaCadastro.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            JOptionPane.showMessageDialog(null, resultado);
+        }else{
+            JOptionPane.showMessageDialog(null, "O campo \"senha\" está diferente do campo \"confirmar senha\".");
+        }
     }//GEN-LAST:event_cadastrarActionPerformed
 
     private void voltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voltarActionPerformed
-        //implementar
+        this.setVisible(false);
+        TelaLogin.telaLogin = new TelaLogin();
+        TelaLogin.telaLogin.setVisible(true);
     }//GEN-LAST:event_voltarActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -138,13 +219,13 @@ public class TelaCadastro extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaCadastro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaInicial.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaCadastro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaInicial.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaCadastro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaInicial.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaCadastro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaInicial.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -157,15 +238,23 @@ public class TelaCadastro extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.ButtonGroup buttonGroup3;
+    private javax.swing.ButtonGroup buttonGroup4;
     private javax.swing.JButton cadastrar;
+    private javax.swing.JRadioButton centro;
     private javax.swing.JPasswordField confirmaSenha;
     private javax.swing.JTextField cpf;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JTextField nome;
+    private javax.swing.JRadioButton norte;
     private javax.swing.JPasswordField senha;
+    private javax.swing.JRadioButton sul;
     private javax.swing.JButton voltar;
     // End of variables declaration//GEN-END:variables
 }

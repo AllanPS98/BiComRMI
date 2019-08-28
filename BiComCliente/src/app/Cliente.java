@@ -6,11 +6,11 @@
 package app;
 
 import interfaces.BilheteInterface;
+import interfaces.UsuarioInterface;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.LinkedList;
 import model.Bilhete;
 
 /**
@@ -18,13 +18,23 @@ import model.Bilhete;
  * @author User
  */
 public class Cliente {
-    public static void main(String args[]) throws RemoteException, NotBoundException{
-        Registry registry = LocateRegistry.getRegistry("127.0.0.1", 12345);
-        BilheteInterface bilhe = (BilheteInterface) registry.lookup("BilheteService");
-        bilhe.adicionarBilhetes("fsa", "ssa", 300);
-        bilhe.adicionarBilhetes("fsa", "sp", 300);
-        bilhe.adicionarBilhetes("fsa", "rj", 300);
-        LinkedList<Bilhete> lista = bilhe.listarBilhetes();
-        System.out.println(lista.toString());
+
+    public Cliente() {
+    }
+    
+    public String cadastrarUsuario(String nome, String cpf, String senha, String regiao, String ip, int porta) throws RemoteException, NotBoundException{
+        Registry reg = LocateRegistry.getRegistry(ip, porta);
+        UsuarioInterface usu = (UsuarioInterface) reg.lookup("UsuarioService");
+        usu.carregarDados();
+        String resultado = usu.cadastroUsuario(nome, cpf, senha, regiao);
+        return resultado;
+    }
+    
+    public boolean login(String cpf, String senha, String ip, int porta) throws RemoteException, NotBoundException{
+        Registry reg = LocateRegistry.getRegistry(ip, porta);
+        UsuarioInterface usu = (UsuarioInterface) reg.lookup("UsuarioService");
+        usu.carregarDados();
+        boolean resultado = usu.loginUsuario(cpf, senha);
+        return resultado;
     }
 }
