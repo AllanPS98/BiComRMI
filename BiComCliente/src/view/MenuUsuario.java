@@ -5,6 +5,16 @@
  */
 package view;
 
+import app.Cliente;
+import java.io.IOException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import model.Bilhete;
+
 /**
  *
  * @author User
@@ -14,9 +24,35 @@ public class MenuUsuario extends javax.swing.JFrame {
     /**
      * Creates new form MenuUsuario
      */
+    LinkedList<Bilhete> meusBilhetes;
+    DefaultListModel modelo;
     public static MenuUsuario menu;
-    public MenuUsuario() {
+    public MenuUsuario() throws IOException, ClassNotFoundException, RemoteException, NotBoundException {
         initComponents();
+        adicionarElementos();
+    }
+    
+    public void adicionarElementos() throws IOException, ClassNotFoundException, RemoteException, NotBoundException {
+        Cliente c = new Cliente();
+        meusBilhetes = c.listarBilhetesComprados(TelaLogin.loginAux, TelaInicial.ip_a, TelaInicial.porta_a);
+        if(meusBilhetes == null){
+            meusBilhetes = c.listarBilhetesComprados(TelaLogin.loginAux, TelaInicial.ip_b, TelaInicial.porta_b);
+            if(meusBilhetes == null){
+                meusBilhetes = c.listarBilhetesComprados(TelaLogin.loginAux, TelaInicial.ip_c, TelaInicial.porta_c);
+            }
+        }
+        if(meusBilhetes != null){
+            listaBilhetes.removeAll();
+            if(!meusBilhetes.isEmpty()){
+                for(int i = 0; i < meusBilhetes.size(); i++){
+                    modelo.addElement("Código: "+ meusBilhetes.get(i).getId() 
+                            + "\nOrigem: " + meusBilhetes.get(i).getOrigem()
+                            + "\nDestino: " + meusBilhetes.get(i).getDestino()
+                            + "\nPreço: R$" + meusBilhetes.get(i).getPreco());
+                }
+            }    
+        }
+        listaBilhetes.setModel(modelo);
     }
 
     /**
@@ -32,7 +68,7 @@ public class MenuUsuario extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        listaBilhetes = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -45,12 +81,12 @@ public class MenuUsuario extends javax.swing.JFrame {
 
         jButton3.setText("Companhia Sul - Suldeste");
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+        listaBilhetes.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(listaBilhetes);
 
         jLabel1.setText("Meus Bilhetes");
 
@@ -63,29 +99,28 @@ public class MenuUsuario extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(65, 65, 65)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(45, 45, 45)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(jButton1))
-                        .addGap(37, 37, 37)
+                        .addComponent(jButton1)
+                        .addGap(38, 38, 38)
                         .addComponent(jButton2)
-                        .addGap(45, 45, 45)
-                        .addComponent(jButton3)))
+                        .addGap(44, 44, 44)
+                        .addComponent(jButton3))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(84, Short.MAX_VALUE))
         );
 
@@ -93,47 +128,13 @@ public class MenuUsuario extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MenuUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MenuUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MenuUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MenuUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MenuUsuario().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JList<String> listaBilhetes;
     // End of variables declaration//GEN-END:variables
 }

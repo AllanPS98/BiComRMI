@@ -11,6 +11,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.LinkedList;
 import model.Bilhete;
 
 /**
@@ -25,7 +26,6 @@ public class Cliente {
     public String cadastrarUsuario(String nome, String cpf, String senha, String regiao, String ip, int porta) throws RemoteException, NotBoundException{
         Registry reg = LocateRegistry.getRegistry(ip, porta);
         UsuarioInterface usu = (UsuarioInterface) reg.lookup("UsuarioService");
-        usu.carregarDados();
         String resultado = usu.cadastroUsuario(nome, cpf, senha, regiao);
         return resultado;
     }
@@ -33,8 +33,13 @@ public class Cliente {
     public boolean login(String cpf, String senha, String ip, int porta) throws RemoteException, NotBoundException{
         Registry reg = LocateRegistry.getRegistry(ip, porta);
         UsuarioInterface usu = (UsuarioInterface) reg.lookup("UsuarioService");
-        usu.carregarDados();
         boolean resultado = usu.loginUsuario(cpf, senha);
         return resultado;
+    }
+    
+    public LinkedList<Bilhete> listarBilhetesComprados(String cpf, String ip, int porta) throws RemoteException, NotBoundException{
+        Registry reg = LocateRegistry.getRegistry(ip, porta);
+        UsuarioInterface usu = (UsuarioInterface) reg.lookup("UsuarioService");
+        return usu.listarBilhetes(cpf);
     }
 }

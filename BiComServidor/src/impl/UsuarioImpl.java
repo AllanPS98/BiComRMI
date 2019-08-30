@@ -17,6 +17,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Bilhete;
 import model.Usuario;
 
 /**
@@ -76,6 +77,11 @@ public class UsuarioImpl extends UnicastRemoteObject implements UsuarioInterface
     
     @Override
     public boolean loginUsuario(String cpf, String senha) throws RemoteException {
+        try {
+            lerArquivoSerial(PATH);
+        } catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(UsuarioImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
         for(int i = 0; i < usuarios.size(); i++){
             if(cpf.equals(usuarios.get(i).getLogin()) && senha.equals(usuarios.get(i).getSenha())){
                 return true;
@@ -91,6 +97,11 @@ public class UsuarioImpl extends UnicastRemoteObject implements UsuarioInterface
 
     @Override
     public String cadastroUsuario(String nome, String cpf, String senha, String regiao) throws RemoteException {
+        try {
+            lerArquivoSerial(PATH);
+        } catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(UsuarioImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
         boolean achouIgual = false;
         for(int i = 0; i < usuarios.size(); i++){
             if(usuarios.get(i).getLogin().equals(cpf)){
@@ -110,13 +121,20 @@ public class UsuarioImpl extends UnicastRemoteObject implements UsuarioInterface
         return "Já existe alguém com esse CPF.";
     }
     
+
     @Override
-    public void carregarDados() throws RemoteException {
+    public LinkedList<Bilhete> listarBilhetes(String cpf) throws RemoteException {
         try {
             lerArquivoSerial(PATH);
+            for(int i = 0; i < usuarios.size(); i++){
+                if(usuarios.get(i).getLogin().equals(cpf)){
+                    return usuarios.get(i).getBilhetesComprados();
+                }
+            }
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(UsuarioImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return null;
     }
     
     

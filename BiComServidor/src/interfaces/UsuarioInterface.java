@@ -7,6 +7,8 @@ package interfaces;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.LinkedList;
+import model.Bilhete;
 
 /**
  *
@@ -16,5 +18,5 @@ public interface UsuarioInterface extends Remote{
     public String cadastroUsuario(String nome, String cpf, String senha, String regiao) throws RemoteException;
     public boolean loginUsuario(String cpf, String senha) throws RemoteException;
     public String comprarBilhete() throws RemoteException;
-    public void carregarDados() throws RemoteException;
+    public LinkedList<Bilhete> listarBilhetes(String cpf) throws RemoteException;
 }
