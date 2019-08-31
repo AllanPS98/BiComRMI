@@ -51,7 +51,9 @@ public class ListarBilhetes extends javax.swing.JFrame {
                             modelo.addElement("Código: " + bilhetes.get(i).getId()
                                     + "| Origem: " + bilhetes.get(i).getOrigem()
                                     + "| Destino: " + bilhetes.get(i).getDestino()
-                                    + "| Preço: R$" + bilhetes.get(i).getPreco());
+                                    + "| Preço: R$" + bilhetes.get(i).getPreco()
+                                    + "| Data: " + bilhetes.get(i).getData() + " # " + bilhetes.get(i).getHorario_voo()
+                            );
                         }
                     }
                 }
@@ -64,9 +66,11 @@ public class ListarBilhetes extends javax.swing.JFrame {
                     for (int i = 0; i < bilhetes.size(); i++) {
                         if (bilhetes.get(i).getCompanhia().equals("Centro-Oeste") && bilhetes.get(i).getData().equals(data)){
                             modelo.addElement("Código: " + bilhetes.get(i).getId()
-                                    + "\nOrigem: " + bilhetes.get(i).getOrigem()
-                                    + "\nDestino: " + bilhetes.get(i).getDestino()
-                                    + "\nPreço: R$" + bilhetes.get(i).getPreco());
+                                    + "| Origem: " + bilhetes.get(i).getOrigem()
+                                    + "| Destino: " + bilhetes.get(i).getDestino()
+                                    + "| Preço: R$" + bilhetes.get(i).getPreco()
+                                    + "| Data: " + bilhetes.get(i).getData() + " # " + bilhetes.get(i).getHorario_voo()
+                            );
                         }
                     }
                 }
@@ -80,9 +84,11 @@ public class ListarBilhetes extends javax.swing.JFrame {
                     for (int i = 0; i < bilhetes.size(); i++) {
                         if (bilhetes.get(i).getCompanhia().equals("Sul - Sudeste") && bilhetes.get(i).getData().equals(data)){
                             modelo.addElement("Código: " + bilhetes.get(i).getId()
-                                    + "\nOrigem: " + bilhetes.get(i).getOrigem()
-                                    + "\nDestino: " + bilhetes.get(i).getDestino()
-                                    + "\nPreço: R$" + bilhetes.get(i).getPreco());
+                                    + "| Origem: " + bilhetes.get(i).getOrigem()
+                                    + "| Destino: " + bilhetes.get(i).getDestino()
+                                    + "| Preço: R$" + bilhetes.get(i).getPreco()
+                                    + "| Data: " + bilhetes.get(i).getData() + " # " + bilhetes.get(i).getHorario_voo()
+                            );
                         }
                     }
                 }

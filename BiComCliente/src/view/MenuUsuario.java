@@ -46,10 +46,12 @@ public class MenuUsuario extends javax.swing.JFrame {
             listaBilhetes.removeAll();
             if(!meusBilhetes.isEmpty()){
                 for(int i = 0; i < meusBilhetes.size(); i++){
-                    modelo.addElement("Código: "+ meusBilhetes.get(i).getId() 
-                            + "| Origem: " + meusBilhetes.get(i).getOrigem()
-                            + "| Destino: " + meusBilhetes.get(i).getDestino()
-                            + "| Preço: R$" + meusBilhetes.get(i).getPreco());
+                    modelo.addElement("Código: " + meusBilhetes.get(i).getId()
+                                    + "| Origem: " + meusBilhetes.get(i).getOrigem()
+                                    + "| Destino: " + meusBilhetes.get(i).getDestino()
+                                    + "| Preço: R$" + meusBilhetes.get(i).getPreco()
+                                    + "| Data: " + meusBilhetes.get(i).getData() + " # " + meusBilhetes.get(i).getHorario_voo()
+                    );
                 }
             }    
         }
@@ -150,9 +152,7 @@ public class MenuUsuario extends javax.swing.JFrame {
             this.setVisible(false);
             ListarBilhetes.listarBilhetes = new ListarBilhetes();
             ListarBilhetes.listarBilhetes.setVisible(true);
-        } catch (RemoteException ex) {
-            Logger.getLogger(MenuUsuario.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NotBoundException ex) {
+        } catch (RemoteException | NotBoundException ex) {
             Logger.getLogger(MenuUsuario.class.getName()).log(Level.SEVERE, null, ex);
         }
         
@@ -164,9 +164,7 @@ public class MenuUsuario extends javax.swing.JFrame {
             this.setVisible(false);
             ListarBilhetes.listarBilhetes = new ListarBilhetes();
             ListarBilhetes.listarBilhetes.setVisible(true);
-        } catch (RemoteException ex) {
-            Logger.getLogger(MenuUsuario.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NotBoundException ex) {
+        } catch (RemoteException | NotBoundException ex) {
             Logger.getLogger(MenuUsuario.class.getName()).log(Level.SEVERE, null, ex);
         }
         
@@ -178,9 +176,7 @@ public class MenuUsuario extends javax.swing.JFrame {
             this.setVisible(false);
             ListarBilhetes.listarBilhetes = new ListarBilhetes();
             ListarBilhetes.listarBilhetes.setVisible(true);
-        } catch (RemoteException ex) {
-            Logger.getLogger(MenuUsuario.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NotBoundException ex) {
+        } catch (RemoteException | NotBoundException ex) {
             Logger.getLogger(MenuUsuario.class.getName()).log(Level.SEVERE, null, ex);
         }
         
