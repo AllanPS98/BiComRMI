@@ -17,6 +17,9 @@ public class Bilhete implements Serializable{
     String destino;
     float preco;
     int id;
+    String data;
+    String horario_voo;
+    String companhia;
 
     public Bilhete(String origem, String destino, float preco) {
         super();
@@ -24,6 +27,32 @@ public class Bilhete implements Serializable{
         this.destino = destino;
         this.preco = preco;
     }
+
+    public String getCompanhia() {
+        return companhia;
+    }
+
+    public void setCompanhia(String companhia) {
+        this.companhia = companhia;
+    }
+    
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public String getHorario_voo() {
+        return horario_voo;
+    }
+
+    public void setHorario_voo(String horario_voo) {
+        this.horario_voo = horario_voo;
+    }
+    
+    
 
     public String getOrigem() {
         return origem;

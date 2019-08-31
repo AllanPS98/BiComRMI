@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import model.Bilhete;
 
@@ -23,7 +25,8 @@ public class MenuUsuario extends javax.swing.JFrame {
      * Creates new form MenuUsuario
      */
     LinkedList<Bilhete> meusBilhetes;
-    DefaultListModel modelo;
+    DefaultListModel modelo = new DefaultListModel();
+    public static int companhia = 0;
     public static MenuUsuario menu;
     public MenuUsuario() throws IOException, ClassNotFoundException, RemoteException, NotBoundException {
         initComponents();
@@ -62,9 +65,9 @@ public class MenuUsuario extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        norte = new javax.swing.JButton();
+        centro = new javax.swing.JButton();
+        sul = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         listaBilhetes = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
@@ -73,11 +76,26 @@ public class MenuUsuario extends javax.swing.JFrame {
         setTitle("Menu do Usuário");
         setResizable(false);
 
-        jButton1.setText("Companhia Norte - Nordeste");
+        norte.setText("Companhia Norte - Nordeste");
+        norte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                norteActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Companha Centro-Oeste");
+        centro.setText("Companha Centro-Oeste");
+        centro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                centroActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText("Companhia Sul - Suldeste");
+        sul.setText("Companhia Sul - Suldeste");
+        sul.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sulActionPerformed(evt);
+            }
+        });
 
         listaBilhetes.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -95,9 +113,9 @@ public class MenuUsuario extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(norte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(centro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(sul, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
@@ -110,11 +128,11 @@ public class MenuUsuario extends javax.swing.JFrame {
                 .addGap(45, 45, 45)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(norte)
                         .addGap(38, 38, 38)
-                        .addComponent(jButton2)
+                        .addComponent(centro)
                         .addGap(44, 44, 44)
-                        .addComponent(jButton3))
+                        .addComponent(sul))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -126,13 +144,55 @@ public class MenuUsuario extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void norteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_norteActionPerformed
+        companhia = 1;
+        try {
+            this.setVisible(false);
+            ListarBilhetes.listarBilhetes = new ListarBilhetes();
+            ListarBilhetes.listarBilhetes.setVisible(true);
+        } catch (RemoteException ex) {
+            Logger.getLogger(MenuUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NotBoundException ex) {
+            Logger.getLogger(MenuUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_norteActionPerformed
+
+    private void centroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_centroActionPerformed
+        companhia = 2;
+        try {
+            this.setVisible(false);
+            ListarBilhetes.listarBilhetes = new ListarBilhetes();
+            ListarBilhetes.listarBilhetes.setVisible(true);
+        } catch (RemoteException ex) {
+            Logger.getLogger(MenuUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NotBoundException ex) {
+            Logger.getLogger(MenuUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_centroActionPerformed
+
+    private void sulActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sulActionPerformed
+        companhia = 3;
+        try {
+            this.setVisible(false);
+            ListarBilhetes.listarBilhetes = new ListarBilhetes();
+            ListarBilhetes.listarBilhetes.setVisible(true);
+        } catch (RemoteException ex) {
+            Logger.getLogger(MenuUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NotBoundException ex) {
+            Logger.getLogger(MenuUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_sulActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton centro;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList<String> listaBilhetes;
+    private javax.swing.JButton norte;
+    private javax.swing.JButton sul;
     // End of variables declaration//GEN-END:variables
 }

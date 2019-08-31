@@ -5,6 +5,15 @@
  */
 package view;
 
+import app.Cliente;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.LinkedList;
+import javax.swing.DefaultListModel;
+import model.Bilhete;
+
 /**
  *
  * @author User
@@ -14,8 +23,69 @@ public class ListarBilhetes extends javax.swing.JFrame {
     /**
      * Creates new form ListarBilhetes
      */
-    public ListarBilhetes() {
+    DefaultListModel modelo = new DefaultListModel();
+    public static ListarBilhetes listarBilhetes;
+
+    public ListarBilhetes() throws RemoteException, NotBoundException {
         initComponents();
+        adicionarElementos(MenuUsuario.companhia);
+    }
+
+    public void adicionarElementos(int companhia) throws RemoteException, NotBoundException {
+        Cliente c = new Cliente();
+        LinkedList<Bilhete> bilhetes = new LinkedList<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date datax = new Date();
+        String data = sdf.format(datax);
+        switch (companhia) {
+            case 1:
+                bilhetes = c.listarBilhetesCompanhia(TelaInicial.ip_a, TelaInicial.porta_a);
+                listaBilhetesCompanhia.removeAll();
+                modelo = new DefaultListModel();
+                if (!bilhetes.isEmpty()) {
+                    for (int i = 0; i < bilhetes.size(); i++) {
+                        if (bilhetes.get(i).getCompanhia().equals("Norte - Nordeste") && bilhetes.get(i).getData().equals(data)){
+                            modelo.addElement("Código: " + bilhetes.get(i).getId()
+                                    + "\nOrigem: " + bilhetes.get(i).getOrigem()
+                                    + "\nDestino: " + bilhetes.get(i).getDestino()
+                                    + "\nPreço: R$" + bilhetes.get(i).getPreco());
+                        }
+                    }
+                }
+                break;
+            case 2:
+                bilhetes = c.listarBilhetesCompanhia(TelaInicial.ip_b, TelaInicial.porta_b);
+                listaBilhetesCompanhia.removeAll();
+                modelo = new DefaultListModel();
+                if (!bilhetes.isEmpty()) {
+                    for (int i = 0; i < bilhetes.size(); i++) {
+                        if (bilhetes.get(i).getCompanhia().equals("Centro-Oeste") && bilhetes.get(i).getData().equals(data)){
+                            modelo.addElement("Código: " + bilhetes.get(i).getId()
+                                    + "\nOrigem: " + bilhetes.get(i).getOrigem()
+                                    + "\nDestino: " + bilhetes.get(i).getDestino()
+                                    + "\nPreço: R$" + bilhetes.get(i).getPreco());
+                        }
+                    }
+                }
+                
+                break;
+            case 3:
+                bilhetes = c.listarBilhetesCompanhia(TelaInicial.ip_c, TelaInicial.porta_c);
+                listaBilhetesCompanhia.removeAll();
+                modelo = new DefaultListModel();
+                if (!bilhetes.isEmpty()) {
+                    for (int i = 0; i < bilhetes.size(); i++) {
+                        if (bilhetes.get(i).getCompanhia().equals("Sul - Sudeste") && bilhetes.get(i).getData().equals(data)){
+                            modelo.addElement("Código: " + bilhetes.get(i).getId()
+                                    + "\nOrigem: " + bilhetes.get(i).getOrigem()
+                                    + "\nDestino: " + bilhetes.get(i).getDestino()
+                                    + "\nPreço: R$" + bilhetes.get(i).getPreco());
+                        }
+                    }
+                }
+                break;
+        }
+        listaBilhetesCompanhia.setModel(modelo);
     }
 
     /**
@@ -28,7 +98,7 @@ public class ListarBilhetes extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        listaBilhetesCompanhia = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -38,12 +108,12 @@ public class ListarBilhetes extends javax.swing.JFrame {
         setTitle("Bilhetes Disponíveis");
         setResizable(false);
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+        listaBilhetesCompanhia.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(listaBilhetesCompanhia);
 
         jLabel1.setText("Companhia:");
 
@@ -92,47 +162,13 @@ public class ListarBilhetes extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ListarBilhetes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ListarBilhetes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ListarBilhetes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ListarBilhetes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ListarBilhetes().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JList<String> listaBilhetesCompanhia;
     // End of variables declaration//GEN-END:variables
 }

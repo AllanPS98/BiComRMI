@@ -42,4 +42,10 @@ public class Cliente {
         UsuarioInterface usu = (UsuarioInterface) reg.lookup("UsuarioService");
         return usu.listarBilhetes(cpf);
     }
+    
+    public LinkedList<Bilhete> listarBilhetesCompanhia(String ip, int porta) throws RemoteException, NotBoundException{
+        Registry reg = LocateRegistry.getRegistry(ip, porta);
+        BilheteInterface bil = (BilheteInterface) reg.lookup("BilheteService");
+        return bil.listarBilhetes();
+    }
 }

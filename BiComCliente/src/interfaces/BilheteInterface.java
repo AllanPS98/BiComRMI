@@ -15,6 +15,5 @@ import model.Bilhete;
  * @author User
  */
 public interface BilheteInterface extends Remote{
-    public void adicionarBilhetes(String origem, String destino, float preco) throws RemoteException;
     public LinkedList<Bilhete> listarBilhetes() throws RemoteException;
 }
