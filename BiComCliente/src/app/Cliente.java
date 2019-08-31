@@ -43,9 +43,27 @@ public class Cliente {
         return usu.listarBilhetes(cpf);
     }
     
-    public LinkedList<Bilhete> listarBilhetesCompanhia(String ip, int porta) throws RemoteException, NotBoundException{
+    public LinkedList<Bilhete> listarBilhetesCompanhia(String ip, int porta, int companhia) throws RemoteException, NotBoundException{
         Registry reg = LocateRegistry.getRegistry(ip, porta);
         BilheteInterface bil = (BilheteInterface) reg.lookup("BilheteService");
-        return bil.listarBilhetes();
+        String comp = null;
+        switch (companhia) {
+            case 1:
+                comp = "Norte - Nordeste";
+                break;
+            case 2:
+                comp = "Centro-Oeste";
+                break;
+            case 3:
+                comp = "Sul - Sudeste";
+                break;
+        }
+        return bil.listarBilhetes(comp);
+    }
+    
+    public boolean comprarBilhete(String cpf, int id, String ip, int porta) throws RemoteException, NotBoundException{
+        Registry reg = LocateRegistry.getRegistry(ip, porta);
+        UsuarioInterface usu = (UsuarioInterface) reg.lookup("UsuarioService");
+        return usu.comprarBilhete(cpf, id);
     }
 }

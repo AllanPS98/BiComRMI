@@ -24,7 +24,7 @@ public class MenuUsuario extends javax.swing.JFrame {
     /**
      * Creates new form MenuUsuario
      */
-    LinkedList<Bilhete> meusBilhetes;
+    LinkedList<Bilhete> meusBilhetes = new LinkedList<>();
     DefaultListModel modelo = new DefaultListModel();
     public static int companhia = 0;
     public static MenuUsuario menu;
@@ -36,13 +36,14 @@ public class MenuUsuario extends javax.swing.JFrame {
     public void adicionarElementos() throws IOException, ClassNotFoundException, RemoteException, NotBoundException {
         Cliente c = new Cliente();
         meusBilhetes = c.listarBilhetesComprados(TelaLogin.loginAux, TelaInicial.ip_a, TelaInicial.porta_a);
-        if(meusBilhetes == null){
+        if(meusBilhetes.isEmpty()){
             meusBilhetes = c.listarBilhetesComprados(TelaLogin.loginAux, TelaInicial.ip_b, TelaInicial.porta_b);
-            if(meusBilhetes == null){
+            if(meusBilhetes.isEmpty()){
                 meusBilhetes = c.listarBilhetesComprados(TelaLogin.loginAux, TelaInicial.ip_c, TelaInicial.porta_c);
             }
         }
-        if(meusBilhetes != null){
+        if(!meusBilhetes.isEmpty()){
+            System.out.println("Os bilhetes existem");
             listaBilhetes.removeAll();
             if(!meusBilhetes.isEmpty()){
                 for(int i = 0; i < meusBilhetes.size(); i++){

@@ -15,13 +15,35 @@ import java.util.LinkedList;
 public class Usuario implements Serializable{
     static final long serialVersionUID = 1L;
     LinkedList<Bilhete> bilhetesComprados;
+    String nome;
     String login;
     String senha;
+    String regiao;
 
-    public Usuario(LinkedList<Bilhete> bilhetesComprados, String login, String senha) {
-        this.bilhetesComprados = bilhetesComprados;
+    public Usuario(String nome, String login, String senha, String regiao) {
+        this.nome = nome;
         this.login = login;
         this.senha = senha;
+        this.regiao = regiao;
+        this.bilhetesComprados = new LinkedList<>();
+    }
+
+    public String getRegiao() {
+        return regiao;
+    }
+
+    public void setRegiao(String regiao) {
+        this.regiao = regiao;
+    }
+
+    
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public LinkedList<Bilhete> getBilhetesComprados() {

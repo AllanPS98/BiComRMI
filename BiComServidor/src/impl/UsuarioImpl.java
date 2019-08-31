@@ -27,7 +27,8 @@ import model.Usuario;
 public class UsuarioImpl extends UnicastRemoteObject implements UsuarioInterface {
     static final long serialVersionUID = 1L;
     LinkedList<Usuario> usuarios = new LinkedList<>();
-    String PATH = "dados\\usuarios"; 
+    String PATH = "dados\\usuarios";
+    String PATH_BILHETES = "dados\\bilhetes";
     public UsuarioImpl() throws RemoteException{
         super();
     }
@@ -84,17 +85,14 @@ public class UsuarioImpl extends UnicastRemoteObject implements UsuarioInterface
         }
         for(int i = 0; i < usuarios.size(); i++){
             if(cpf.equals(usuarios.get(i).getLogin()) && senha.equals(usuarios.get(i).getSenha())){
-                System.out.println("O usuário " + usuarios.get(i).getNome() + "está logado.");
+                System.out.println("O usuário " + usuarios.get(i).getNome() + " está logado.");
                 return true;
             }
         }
         return false;
     }
 
-    @Override
-    public String comprarBilhete() throws RemoteException {
-        return "nada";
-    }
+    
 
     @Override
     public String cadastroUsuario(String nome, String cpf, String senha, String regiao) throws RemoteException {
@@ -113,7 +111,7 @@ public class UsuarioImpl extends UnicastRemoteObject implements UsuarioInterface
             try {
                 Usuario u = new Usuario(nome,cpf,senha, regiao);
                 usuarios.add(u);
-                System.out.println("O usuário " + u.getNome() + "está cadastrado.");
+                System.out.println("O usuário " + u.getNome() + " está cadastrado.");
                 escreverArquivoSerial(PATH,usuarios);
             } catch (IOException ex) {
                 Logger.getLogger(UsuarioImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -137,6 +135,29 @@ public class UsuarioImpl extends UnicastRemoteObject implements UsuarioInterface
             Logger.getLogger(UsuarioImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    @Override
+    public boolean comprarBilhete(String cpf, int id) throws RemoteException {
+        for(int i = 0; i < BilheteImpl.bilhetes.size(); i++){
+            if(id == BilheteImpl.bilhetes.get(i).getId()){
+                for(int j = 0; j < usuarios.size(); j++){
+                    if(usuarios.get(j).getLogin().equals(cpf)){
+                        usuarios.get(j).getBilhetesComprados().add(BilheteImpl.bilhetes.remove(i));
+                        System.out.println("O bilhete "+ usuarios.get(j).getBilhetesComprados().getLast().getId()
+                        + "foi comprado por " + usuarios.get(j).getNome());
+                        try {
+                            escreverArquivoSerial(PATH, usuarios);
+                            escreverArquivoSerial(PATH_BILHETES, BilheteImpl.bilhetes);
+                        } catch (IOException ex) {
+                            Logger.getLogger(UsuarioImpl.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
     
     

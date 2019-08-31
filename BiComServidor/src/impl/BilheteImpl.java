@@ -20,7 +20,6 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Bilhete;
-import model.Usuario;
 
 /**
  *
@@ -92,7 +91,11 @@ public class BilheteImpl extends UnicastRemoteObject implements BilheteInterface
         String data = sdf.format(datax);
         b.setData(data);
         b.setHorario_voo(horario);
-        b.setId(bilhetes.size() + 1);
+        if(bilhetes.isEmpty()){
+            b.setId(bilhetes.size()+1);
+        }else{
+            b.setId(bilhetes.getLast().getId() + 1);
+        }
         bilhetes.add(b);
         try {
             escreverArquivoSerial(PATH, bilhetes);
@@ -103,13 +106,20 @@ public class BilheteImpl extends UnicastRemoteObject implements BilheteInterface
     }
 
     @Override
-    public LinkedList<Bilhete> listarBilhetes() throws RemoteException {
+    public LinkedList<Bilhete> listarBilhetes(String companhia) throws RemoteException {
+        LinkedList<Bilhete> aux = new LinkedList<>();
         try {
+            
             lerArquivoSerial(PATH);
+            for(int i = 0; i < bilhetes.size(); i++){
+                if(bilhetes.get(i).getCompanhia().equals(companhia)){
+                    aux.add(bilhetes.get(i));
+                }
+            }
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(BilheteImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return bilhetes;
+        return aux;
     }
 
 }
