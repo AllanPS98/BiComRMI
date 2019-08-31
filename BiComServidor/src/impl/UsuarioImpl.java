@@ -84,6 +84,7 @@ public class UsuarioImpl extends UnicastRemoteObject implements UsuarioInterface
         }
         for(int i = 0; i < usuarios.size(); i++){
             if(cpf.equals(usuarios.get(i).getLogin()) && senha.equals(usuarios.get(i).getSenha())){
+                System.out.println("O usuário " + usuarios.get(i).getNome() + "está logado.");
                 return true;
             }
         }
@@ -112,6 +113,7 @@ public class UsuarioImpl extends UnicastRemoteObject implements UsuarioInterface
             try {
                 Usuario u = new Usuario(nome,cpf,senha, regiao);
                 usuarios.add(u);
+                System.out.println("O usuário " + u.getNome() + "está cadastrado.");
                 escreverArquivoSerial(PATH,usuarios);
             } catch (IOException ex) {
                 Logger.getLogger(UsuarioImpl.class.getName()).log(Level.SEVERE, null, ex);

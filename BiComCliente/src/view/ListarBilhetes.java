@@ -6,11 +6,14 @@
 package view;
 
 import app.Cliente;
+import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import model.Bilhete;
 
@@ -46,9 +49,9 @@ public class ListarBilhetes extends javax.swing.JFrame {
                     for (int i = 0; i < bilhetes.size(); i++) {
                         if (bilhetes.get(i).getCompanhia().equals("Norte - Nordeste") && bilhetes.get(i).getData().equals(data)){
                             modelo.addElement("Código: " + bilhetes.get(i).getId()
-                                    + "\tOrigem: " + bilhetes.get(i).getOrigem()
-                                    + "\tDestino: " + bilhetes.get(i).getDestino()
-                                    + "\tPreço: R$" + bilhetes.get(i).getPreco());
+                                    + "| Origem: " + bilhetes.get(i).getOrigem()
+                                    + "| Destino: " + bilhetes.get(i).getDestino()
+                                    + "| Preço: R$" + bilhetes.get(i).getPreco());
                         }
                     }
                 }
@@ -102,7 +105,7 @@ public class ListarBilhetes extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        voltar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Bilhetes Disponíveis");
@@ -121,7 +124,12 @@ public class ListarBilhetes extends javax.swing.JFrame {
 
         jButton1.setText("Comprar");
 
-        jButton2.setText("<");
+        voltar.setText("<");
+        voltar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                voltarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -132,7 +140,7 @@ public class ListarBilhetes extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(voltar, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -155,7 +163,7 @@ public class ListarBilhetes extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(voltar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -163,13 +171,24 @@ public class ListarBilhetes extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void voltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voltarActionPerformed
+        try {
+            this.setVisible(false);
+            MenuUsuario.menu = new MenuUsuario();
+            MenuUsuario.menu.setVisible(true);
+        } catch (IOException | ClassNotFoundException | NotBoundException ex) {
+            Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_voltarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList<String> listaBilhetesCompanhia;
+    private javax.swing.JButton voltar;
     // End of variables declaration//GEN-END:variables
 }

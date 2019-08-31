@@ -47,9 +47,9 @@ public class MenuUsuario extends javax.swing.JFrame {
             if(!meusBilhetes.isEmpty()){
                 for(int i = 0; i < meusBilhetes.size(); i++){
                     modelo.addElement("Código: "+ meusBilhetes.get(i).getId() 
-                            + "\tOrigem: " + meusBilhetes.get(i).getOrigem()
-                            + "\tDestino: " + meusBilhetes.get(i).getDestino()
-                            + "\tPreço: R$" + meusBilhetes.get(i).getPreco());
+                            + "| Origem: " + meusBilhetes.get(i).getOrigem()
+                            + "| Destino: " + meusBilhetes.get(i).getDestino()
+                            + "| Preço: R$" + meusBilhetes.get(i).getPreco());
                 }
             }    
         }

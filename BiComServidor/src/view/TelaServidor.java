@@ -107,21 +107,26 @@ public class TelaServidor extends javax.swing.JFrame {
 
     private void startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startActionPerformed
         Servidor s = new Servidor();
-        s.startRMI();
         if(norte.isSelected()){
             try {
+                s.startRMI();
+                JOptionPane.showMessageDialog(null, "Servidor do Norte - Nordeste iniciado.");
                 s.gerarBilhetes(1);
             } catch (RemoteException ex) {
                 Logger.getLogger(TelaServidor.class.getName()).log(Level.SEVERE, null, ex);
             }
         }else if(centro.isSelected()){
             try {
+                s.startRMI();
+                JOptionPane.showMessageDialog(null, "Servidor do Centro-Oeste iniciado.");
                 s.gerarBilhetes(2);
             } catch (RemoteException ex) {
                 Logger.getLogger(TelaServidor.class.getName()).log(Level.SEVERE, null, ex);
             }
         }else if(sul.isSelected()){
             try {
+                s.startRMI();
+                JOptionPane.showMessageDialog(null, "Servidor do Sul - Sudeste iniciado.");
                 s.gerarBilhetes(3);
             } catch (RemoteException ex) {
                 Logger.getLogger(TelaServidor.class.getName()).log(Level.SEVERE, null, ex);
