@@ -3,8 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/PICHAU/Documents/Allan/PBL%203/BiComRMI/BiComServidor/src/interfaces/UsuarioInterface.java</file>
-            <file>file:/C:/Users/PICHAU/Documents/Allan/PBL%203/BiComRMI/BiComServidor/src/impl/UsuarioImpl.java</file>
+            <file>file:/C:/Users/User/Documents/GitHub/BiComRMI/BiComServidor/src/app/Servidor.java</file>
+            <file>file:/C:/Users/User/Documents/GitHub/BiComRMI/BiComServidor/src/interfaces/BilheteInterface.java</file>
+            <file>file:/C:/Users/User/Documents/GitHub/BiComRMI/BiComServidor/src/impl/BilheteImpl.java</file>
         </group>
     </open-files>
 </project-private>

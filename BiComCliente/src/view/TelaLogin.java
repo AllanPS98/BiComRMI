@@ -11,6 +11,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -24,6 +25,7 @@ public class TelaLogin extends javax.swing.JFrame {
     public static TelaLogin telaLogin;
     public static String loginAux;
     public static String senhaAux;
+
     public TelaLogin() {
         initComponents();
     }
@@ -117,29 +119,40 @@ public class TelaLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_senhaActionPerformed
 
     private void cadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarActionPerformed
-        this.setVisible(false);
+
         TelaCadastro.telaCadastro = new TelaCadastro();
         TelaCadastro.telaCadastro.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_cadastrarActionPerformed
 
     private void entrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entrarActionPerformed
         Cliente c = new Cliente();
         loginAux = login.getText();
         senhaAux = senha.getText();
-        try {
-            boolean compA = c.login(login.getText(), senha.getText(), TelaInicial.ip_a, TelaInicial.porta_a);
-            boolean compB = c.login(login.getText(), senha.getText(), TelaInicial.ip_b, TelaInicial.porta_b);
-            boolean compC = c.login(login.getText(), senha.getText(), TelaInicial.ip_c, TelaInicial.porta_c);
-            if(compA || compB || compC){
-                this.setVisible(false);
-                MenuUsuario.menu = new MenuUsuario();
-                MenuUsuario.menu.setVisible(true);
+        if (loginAux.equals("")) {
+            JOptionPane.showMessageDialog(null, "Preencha o login.");
+        } else if (senhaAux.equals("")) {
+            JOptionPane.showMessageDialog(null, "Preencha a senha.");
+        } else {
+            try {
+                boolean compA = c.login(login.getText(), senha.getText(), TelaInicial.ip_a, TelaInicial.porta_a);
+                boolean compB = c.login(login.getText(), senha.getText(), TelaInicial.ip_b, TelaInicial.porta_b);
+                boolean compC = c.login(login.getText(), senha.getText(), TelaInicial.ip_c, TelaInicial.porta_c);
+                if (compA || compB || compC) {
+                    
+                    MenuUsuario.menu = new MenuUsuario();
+                    MenuUsuario.menu.setVisible(true);
+                    this.dispose();
+                }else{
+                    JOptionPane.showMessageDialog(null, "Erro ao logar. Verifique seu login e senha.");
+                }
+            } catch (RemoteException | NotBoundException ex) {
+                Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException | ClassNotFoundException ex) {
+                Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (RemoteException | NotBoundException ex) {
-            Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }//GEN-LAST:event_entrarActionPerformed
 
 

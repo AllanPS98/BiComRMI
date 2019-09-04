@@ -60,7 +60,7 @@ public class ListarBilhetes extends javax.swing.JFrame {
                 }
                 break;
             case 2:
-                bilhetes = c.listarBilhetesCompanhia(TelaInicial.ip_b, TelaInicial.porta_b,companhia);
+                bilhetes = c.listarBilhetesCompanhia(TelaInicial.ip_b, TelaInicial.porta_b, companhia);
                 listaBilhetesCompanhia.removeAll();
                 modelo = new DefaultListModel();
                 if (!bilhetes.isEmpty()) {
@@ -78,7 +78,7 @@ public class ListarBilhetes extends javax.swing.JFrame {
 
                 break;
             case 3:
-                bilhetes = c.listarBilhetesCompanhia(TelaInicial.ip_c, TelaInicial.porta_c,companhia);
+                bilhetes = c.listarBilhetesCompanhia(TelaInicial.ip_c, TelaInicial.porta_c, companhia);
                 listaBilhetesCompanhia.removeAll();
                 modelo = new DefaultListModel();
                 if (!bilhetes.isEmpty()) {
@@ -185,9 +185,9 @@ public class ListarBilhetes extends javax.swing.JFrame {
 
     private void voltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voltarActionPerformed
         try {
-            this.setVisible(false);
             MenuUsuario.menu = new MenuUsuario();
             MenuUsuario.menu.setVisible(true);
+            this.dispose();
         } catch (IOException | ClassNotFoundException | NotBoundException ex) {
             Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -195,43 +195,47 @@ public class ListarBilhetes extends javax.swing.JFrame {
     }//GEN-LAST:event_voltarActionPerformed
 
     private void comprarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comprarActionPerformed
-        Cliente c = new Cliente();
-        Bilhete b = bilhetes.get(listaBilhetesCompanhia.getSelectedIndex());
-        System.out.println(b);
-        boolean resultado = false;
-        switch (MenuUsuario.companhia) {
-            case 1: {
-                try {
-                    resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_a, TelaInicial.porta_a);
-                } catch (RemoteException | NotBoundException ex) {
-                    Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
+        if (listaBilhetesCompanhia.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(null, "Escolha ao menos UM bilhete.");
+        } else {
+            Cliente c = new Cliente();
+            Bilhete b = bilhetes.get(listaBilhetesCompanhia.getSelectedIndex());
+            System.out.println(b);
+            boolean resultado = false;
+            switch (MenuUsuario.companhia) {
+                case 1: {
+                    try {
+                        resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_a, TelaInicial.porta_a);
+                    } catch (RemoteException | NotBoundException ex) {
+                        Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
-            }
-            break;
-            case 2: {
-                try {
-                    resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_b, TelaInicial.porta_b);
-                } catch (RemoteException | NotBoundException ex) {
-                    Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
+                break;
+                case 2: {
+                    try {
+                        resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_b, TelaInicial.porta_b);
+                    } catch (RemoteException | NotBoundException ex) {
+                        Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
-            }
-            break;
-            case 3: {
-                try {
-                    resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_c, TelaInicial.porta_c);
-                } catch (RemoteException | NotBoundException ex) {
-                    Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
+                break;
+                case 3: {
+                    try {
+                        resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_c, TelaInicial.porta_c);
+                    } catch (RemoteException | NotBoundException ex) {
+                        Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
+                break;
             }
-            break;
-        }
-        if (resultado) {
-            bilhetes.remove(listaBilhetesCompanhia.getSelectedIndex());
-            modelo.remove(listaBilhetesCompanhia.getSelectedIndex());
-            listaBilhetesCompanhia.setModel(modelo);
-            JOptionPane.showMessageDialog(null, "Bilhete " + b.getId() + " comprado por " + b.getPreco() + " reais.");
-        }else{
-            JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
+            if (resultado) {
+                bilhetes.remove(listaBilhetesCompanhia.getSelectedIndex());
+                modelo.remove(listaBilhetesCompanhia.getSelectedIndex());
+                listaBilhetesCompanhia.setModel(modelo);
+                JOptionPane.showMessageDialog(null, "Bilhete " + b.getId() + " comprado por " + b.getPreco() + " reais.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
+            }
         }
     }//GEN-LAST:event_comprarActionPerformed
 

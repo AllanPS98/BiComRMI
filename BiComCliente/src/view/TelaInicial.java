@@ -5,6 +5,8 @@
  */
 package view;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author User
@@ -175,17 +177,23 @@ public class TelaInicial extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void okActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okActionPerformed
-        TelaInicial.porta_a = Integer.parseInt(this.porta_A.getText());
-        TelaInicial.porta_b = Integer.parseInt(this.porta_B.getText());
-        TelaInicial.porta_c = Integer.parseInt(this.porta_C.getText());
+        if(this.porta_A.getText().equals("") || this.porta_B.getText().equals("") || this.porta_C.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Preencha as portas.");
+        }else if(this.IP_A.getText().equals("") || this.IP_B.getText().equals("") || this.IP_C.getText().equals("") ){
+            JOptionPane.showMessageDialog(null, "Preencha os IP's.");
+        }else{
+            TelaInicial.porta_a = Integer.parseInt(this.porta_A.getText());
+            TelaInicial.porta_b = Integer.parseInt(this.porta_B.getText());
+            TelaInicial.porta_c = Integer.parseInt(this.porta_C.getText());
+
+            TelaInicial.ip_a = this.IP_A.getText();
+            TelaInicial.ip_b = this.IP_B.getText();
+            TelaInicial.ip_c = this.IP_C.getText();
+            TelaLogin.telaLogin = new TelaLogin();
+            TelaLogin.telaLogin.setVisible(true);
+            this.dispose();
+        }
         
-        TelaInicial.ip_a = this.IP_A.getText();
-        TelaInicial.ip_b = this.IP_B.getText();
-        TelaInicial.ip_c = this.IP_C.getText();
-        
-        this.setVisible(false);
-        TelaLogin.telaLogin = new TelaLogin();
-        TelaLogin.telaLogin.setVisible(true);
     }//GEN-LAST:event_okActionPerformed
 
     /**

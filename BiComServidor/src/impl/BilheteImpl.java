@@ -102,17 +102,19 @@ public class BilheteImpl extends UnicastRemoteObject implements BilheteInterface
         } catch (IOException ex) {
             Logger.getLogger(BilheteImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println(b.toString() + "adicionado!");
+        System.out.println(b.toString() + " adicionado!");
     }
 
     @Override
     public LinkedList<Bilhete> listarBilhetes(String companhia) throws RemoteException {
         LinkedList<Bilhete> aux = new LinkedList<>();
         try {
-            
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            Date datax = new Date();
+            String data = sdf.format(datax);
             lerArquivoSerial(PATH);
             for(int i = 0; i < bilhetes.size(); i++){
-                if(bilhetes.get(i).getCompanhia().equals(companhia)){
+                if(bilhetes.get(i).getCompanhia().equals(companhia) && bilhetes.get(i).getData().compareTo(data) > 0){
                     aux.add(bilhetes.get(i));
                 }
             }

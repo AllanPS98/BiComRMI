@@ -145,7 +145,7 @@ public class UsuarioImpl extends UnicastRemoteObject implements UsuarioInterface
                     if(usuarios.get(j).getLogin().equals(cpf)){
                         usuarios.get(j).getBilhetesComprados().add(BilheteImpl.bilhetes.remove(i));
                         System.out.println("O bilhete "+ usuarios.get(j).getBilhetesComprados().getLast().getId()
-                        + "foi comprado por " + usuarios.get(j).getNome());
+                        + " foi comprado por " + usuarios.get(j).getNome());
                         try {
                             escreverArquivoSerial(PATH, usuarios);
                             escreverArquivoSerial(PATH_BILHETES, BilheteImpl.bilhetes);
