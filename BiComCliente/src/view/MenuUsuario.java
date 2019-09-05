@@ -25,6 +25,11 @@ public class MenuUsuario extends javax.swing.JFrame {
      * Creates new form MenuUsuario
      */
     LinkedList<Bilhete> meusBilhetes = new LinkedList<>();
+    LinkedList<Bilhete> origensList = new LinkedList<>();
+    LinkedList<Bilhete> destinosList = new LinkedList<>();
+    LinkedList<Bilhete> listaNorte = new LinkedList<>();
+    LinkedList<Bilhete> listaCentro = new LinkedList<>();
+    LinkedList<Bilhete> listaSul = new LinkedList<>();
     DefaultListModel modelo = new DefaultListModel();
     public static int companhia = 0;
     public static MenuUsuario menu;
@@ -56,7 +61,29 @@ public class MenuUsuario extends javax.swing.JFrame {
                 }
             }    
         }
+        
         listaBilhetes.setModel(modelo);
+        listaNorte = c.listarBilhetesCompanhia(TelaInicial.ip_a, TelaInicial.porta_a, 1);
+        listaCentro = c.listarBilhetesCompanhia(TelaInicial.ip_b, TelaInicial.porta_b, 2);
+        listaSul = c.listarBilhetesCompanhia(TelaInicial.ip_c, TelaInicial.porta_c, 3);
+        
+        System.out.println(listaNorte);
+        for(int i = 0; i < listaNorte.size(); i++){
+            boolean podeAdd = true;
+            for(int j = 0; j < origensList.size(); j++){
+                if(listaNorte.get(i).getOrigem().equals(origensList.get(j).getOrigem())){
+                    podeAdd = false;
+                }
+            }
+            if(podeAdd){
+                origensList.add(listaNorte.get(i));
+            }
+        }
+        System.out.println(origensList);
+        origensbox.removeAllItems();
+        for(int i = 0; i < origensList.size(); i++){
+            origensbox.addItem(origensList.get(i).getOrigem());
+        }
     }
 
     /**
@@ -74,6 +101,14 @@ public class MenuUsuario extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         listaBilhetes = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
+        origensbox = new javax.swing.JComboBox<>();
+        destinosbox = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        pesquisar = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        listaTrechosCompletos = new javax.swing.JList<>();
+        comprarCompleto = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Menu do Usuário");
@@ -109,6 +144,25 @@ public class MenuUsuario extends javax.swing.JFrame {
 
         jLabel1.setText("Meus Bilhetes");
 
+        origensbox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        destinosbox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel2.setText("Origem");
+
+        jLabel3.setText("Destino");
+
+        pesquisar.setText("Pesquisar");
+
+        listaTrechosCompletos.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane2.setViewportView(listaTrechosCompletos);
+
+        comprarCompleto.setText("Comprar Trecho Completo");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -118,14 +172,29 @@ public class MenuUsuario extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(norte)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 110, Short.MAX_VALUE)
                         .addComponent(centro, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(103, 103, 103)
-                        .addComponent(sul, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(sul, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(origensbox, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addGap(47, 47, 47)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(destinosbox, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(pesquisar))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(comprarCompleto)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -139,8 +208,21 @@ public class MenuUsuario extends javax.swing.JFrame {
                 .addGap(11, 11, 11)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addGap(9, 9, 9)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(origensbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(destinosbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pesquisar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(comprarCompleto)
+                .addGap(27, 27, 27))
         );
 
         pack();
@@ -186,10 +268,18 @@ public class MenuUsuario extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton centro;
+    private javax.swing.JButton comprarCompleto;
+    private javax.swing.JComboBox<String> destinosbox;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JList<String> listaBilhetes;
+    private javax.swing.JList<String> listaTrechosCompletos;
     private javax.swing.JButton norte;
+    private javax.swing.JComboBox<String> origensbox;
+    private javax.swing.JButton pesquisar;
     private javax.swing.JButton sul;
     // End of variables declaration//GEN-END:variables
 }
