@@ -114,7 +114,7 @@ public class BilheteImpl extends UnicastRemoteObject implements BilheteInterface
             String data = sdf.format(datax);
             lerArquivoSerial(PATH);
             for(int i = 0; i < bilhetes.size(); i++){
-                if(bilhetes.get(i).getCompanhia().equals(companhia) && bilhetes.get(i).getData().compareTo(data) > 0){
+                if(bilhetes.get(i).getCompanhia().equals(companhia) && bilhetes.get(i).getData().compareTo(data) >= 0){
                     aux.add(bilhetes.get(i));
                 }
             }

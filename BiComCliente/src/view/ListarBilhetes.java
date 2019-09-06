@@ -43,6 +43,7 @@ public class ListarBilhetes extends javax.swing.JFrame {
         String data = sdf.format(datax);
         switch (companhia) {
             case 1:
+                nomeComp.setText("Norte - Nordeste");
                 bilhetes = c.listarBilhetesCompanhia(TelaInicial.ip_a, TelaInicial.porta_a, companhia);
                 listaBilhetesCompanhia.removeAll();
                 modelo = new DefaultListModel();
@@ -60,6 +61,7 @@ public class ListarBilhetes extends javax.swing.JFrame {
                 }
                 break;
             case 2:
+                nomeComp.setText("Centro-Oeste");
                 bilhetes = c.listarBilhetesCompanhia(TelaInicial.ip_b, TelaInicial.porta_b, companhia);
                 listaBilhetesCompanhia.removeAll();
                 modelo = new DefaultListModel();
@@ -78,6 +80,7 @@ public class ListarBilhetes extends javax.swing.JFrame {
 
                 break;
             case 3:
+                nomeComp.setText("Sul - Sudeste");
                 bilhetes = c.listarBilhetesCompanhia(TelaInicial.ip_c, TelaInicial.porta_c, companhia);
                 listaBilhetesCompanhia.removeAll();
                 modelo = new DefaultListModel();
@@ -110,7 +113,7 @@ public class ListarBilhetes extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         listaBilhetesCompanhia = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        nomeComp = new javax.swing.JLabel();
         comprar = new javax.swing.JButton();
         voltar = new javax.swing.JButton();
 
@@ -127,7 +130,7 @@ public class ListarBilhetes extends javax.swing.JFrame {
 
         jLabel1.setText("Companhia:");
 
-        jLabel2.setText("Nome Aqui");
+        nomeComp.setText("Nome Aqui");
 
         comprar.setText("Comprar");
         comprar.addActionListener(new java.awt.event.ActionListener() {
@@ -156,7 +159,7 @@ public class ListarBilhetes extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel2)
+                                .addComponent(nomeComp)
                                 .addGap(230, 230, 230)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(comprar))
@@ -169,7 +172,7 @@ public class ListarBilhetes extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel2))
+                    .addComponent(nomeComp))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -243,9 +246,9 @@ public class ListarBilhetes extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton comprar;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList<String> listaBilhetesCompanhia;
+    private javax.swing.JLabel nomeComp;
     private javax.swing.JButton voltar;
     // End of variables declaration//GEN-END:variables
 }
