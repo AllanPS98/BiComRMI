@@ -39,7 +39,7 @@ public class MenuUsuario extends javax.swing.JFrame {
         adicionarElementos();
     }
     
-    public void adicionarElementos() throws IOException, ClassNotFoundException, RemoteException, NotBoundException {
+    private void adicionarElementos() throws IOException, ClassNotFoundException, RemoteException, NotBoundException {
         Cliente c = new Cliente();
         meusBilhetes = c.listarBilhetesComprados(TelaLogin.loginAux, TelaInicial.ip_a, TelaInicial.porta_a);
         if(meusBilhetes.isEmpty()){
