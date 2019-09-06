@@ -234,6 +234,11 @@ public class MenuUsuario extends javax.swing.JFrame {
         jScrollPane2.setViewportView(listaTrechosCompletos);
 
         comprarCompleto.setText("Comprar Trecho Completo");
+        comprarCompleto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comprarCompletoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -343,6 +348,12 @@ public class MenuUsuario extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Origem e destino devem ser diferentes.");
         }
     }//GEN-LAST:event_pesquisarActionPerformed
+
+    private void comprarCompletoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comprarCompletoActionPerformed
+        if(listaTrechosCompletos.getSelectedIndex() == -1){
+            JOptionPane.showMessageDialog(null, "Escolha ao menos UM trecho.");
+        }
+    }//GEN-LAST:event_comprarCompletoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
