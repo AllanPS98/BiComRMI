@@ -32,123 +32,128 @@ public class MenuUsuario extends javax.swing.JFrame {
     LinkedList<Bilhete> listaCentro = new LinkedList<>();
     LinkedList<Bilhete> listaSul = new LinkedList<>();
     DefaultListModel modelo = new DefaultListModel();
+    DefaultListModel modelo2 = new DefaultListModel();
     public static int companhia = 0;
     public static MenuUsuario menu;
+
     public MenuUsuario() throws IOException, ClassNotFoundException, RemoteException, NotBoundException {
         initComponents();
         adicionarElementos();
     }
-    
+
     private void adicionarElementos() throws IOException, ClassNotFoundException, RemoteException, NotBoundException {
         Cliente c = new Cliente();
+        listaTrechosCompletos.removeAll();
+        modelo2.removeAllElements();
+        listaTrechosCompletos.setModel(modelo2);
         meusBilhetes = c.listarBilhetesComprados(TelaLogin.loginAux, TelaInicial.ip_a, TelaInicial.porta_a);
-        if(meusBilhetes.isEmpty()){
+        if (meusBilhetes.isEmpty()) {
             meusBilhetes = c.listarBilhetesComprados(TelaLogin.loginAux, TelaInicial.ip_b, TelaInicial.porta_b);
-            if(meusBilhetes.isEmpty()){
+            if (meusBilhetes.isEmpty()) {
                 meusBilhetes = c.listarBilhetesComprados(TelaLogin.loginAux, TelaInicial.ip_c, TelaInicial.porta_c);
             }
         }
-        if(!meusBilhetes.isEmpty()){
+        if (!meusBilhetes.isEmpty()) {
             System.out.println("Os bilhetes existem");
             listaBilhetes.removeAll();
-            if(!meusBilhetes.isEmpty()){
-                for(int i = 0; i < meusBilhetes.size(); i++){
+            if (!meusBilhetes.isEmpty()) {
+                for (int i = 0; i < meusBilhetes.size(); i++) {
                     modelo.addElement("Código: " + meusBilhetes.get(i).getId()
-                                    + "| Origem: " + meusBilhetes.get(i).getOrigem()
-                                    + "| Destino: " + meusBilhetes.get(i).getDestino()
-                                    + "| Preço: R$" + meusBilhetes.get(i).getPreco()
-                                    + "| Data: " + meusBilhetes.get(i).getData() + " # " + meusBilhetes.get(i).getHorario_voo()
+                            + "| Origem: " + meusBilhetes.get(i).getOrigem()
+                            + "| Destino: " + meusBilhetes.get(i).getDestino()
+                            + "| Preço: R$" + meusBilhetes.get(i).getPreco()
+                            + "| Data: " + meusBilhetes.get(i).getData() + " # " + meusBilhetes.get(i).getHorario_voo()
                     );
                 }
-            }    
+            }
         }
-        
+
         listaBilhetes.setModel(modelo);
         listaNorte = c.listarBilhetesCompanhia(TelaInicial.ip_a, TelaInicial.porta_a, 1);
         listaCentro = c.listarBilhetesCompanhia(TelaInicial.ip_b, TelaInicial.porta_b, 2);
         listaSul = c.listarBilhetesCompanhia(TelaInicial.ip_c, TelaInicial.porta_c, 3);
-        
+
         //preenchendo combobox origem
-        for(int i = 0; i < listaNorte.size(); i++){
+        for (int i = 0; i < listaNorte.size(); i++) {
             boolean podeAdd = true;
-            for(int j = 0; j < origensList.size(); j++){
-                if(listaNorte.get(i).getOrigem().equals(origensList.get(j).getOrigem())){
+            for (int j = 0; j < origensList.size(); j++) {
+                if (listaNorte.get(i).getOrigem().equals(origensList.get(j).getOrigem())) {
                     podeAdd = false;
                 }
             }
-            if(podeAdd){
+            if (podeAdd) {
                 origensList.add(listaNorte.get(i));
             }
         }
-        for(int i = 0; i < listaCentro.size(); i++){
+        for (int i = 0; i < listaCentro.size(); i++) {
             boolean podeAdd = true;
-            for(int j = 0; j < origensList.size(); j++){
-                if(listaCentro.get(i).getOrigem().equals(origensList.get(j).getOrigem())){
+            for (int j = 0; j < origensList.size(); j++) {
+                if (listaCentro.get(i).getOrigem().equals(origensList.get(j).getOrigem())) {
                     podeAdd = false;
                 }
             }
-            if(podeAdd){
+            if (podeAdd) {
                 origensList.add(listaCentro.get(i));
             }
         }
-        
-        for(int i = 0; i < listaSul.size(); i++){
+
+        for (int i = 0; i < listaSul.size(); i++) {
             boolean podeAdd = true;
-            for(int j = 0; j < origensList.size(); j++){
-                if(listaSul.get(i).getOrigem().equals(origensList.get(j).getOrigem())){
+            for (int j = 0; j < origensList.size(); j++) {
+                if (listaSul.get(i).getOrigem().equals(origensList.get(j).getOrigem())) {
                     podeAdd = false;
                 }
             }
-            if(podeAdd){
+            if (podeAdd) {
                 origensList.add(listaSul.get(i));
             }
         }
-        
+
         System.out.println(origensList);
         origensbox.removeAllItems();
-        for(int i = 0; i < origensList.size(); i++){
+        for (int i = 0; i < origensList.size(); i++) {
             origensbox.addItem(origensList.get(i).getOrigem());
         }
-        
+
         //preenchendo combobox do destino
-        for(int i = 0; i < listaNorte.size(); i++){
+        for (int i = 0; i < listaNorte.size(); i++) {
             boolean podeAdd = true;
-            for(int j = 0; j < destinosList.size(); j++){
-                if(listaNorte.get(i).getDestino().equals(destinosList.get(j).getDestino())){
+            for (int j = 0; j < destinosList.size(); j++) {
+                if (listaNorte.get(i).getDestino().equals(destinosList.get(j).getDestino())) {
                     podeAdd = false;
                 }
             }
-            if(podeAdd){
+            if (podeAdd) {
                 destinosList.add(listaNorte.get(i));
             }
         }
-        for(int i = 0; i < listaCentro.size(); i++){
+        for (int i = 0; i < listaCentro.size(); i++) {
             boolean podeAdd = true;
-            for(int j = 0; j < destinosList.size(); j++){
-                if(listaCentro.get(i).getDestino().equals(destinosList.get(j).getDestino())){
+            for (int j = 0; j < destinosList.size(); j++) {
+                if (listaCentro.get(i).getDestino().equals(destinosList.get(j).getDestino())) {
                     podeAdd = false;
                 }
             }
-            if(podeAdd){
+            if (podeAdd) {
                 destinosList.add(listaCentro.get(i));
             }
         }
-        
-        for(int i = 0; i < listaSul.size(); i++){
+
+        for (int i = 0; i < listaSul.size(); i++) {
             boolean podeAdd = true;
-            for(int j = 0; j < destinosList.size(); j++){
-                if(listaSul.get(i).getDestino().equals(destinosList.get(j).getDestino())){
+            for (int j = 0; j < destinosList.size(); j++) {
+                if (listaSul.get(i).getDestino().equals(destinosList.get(j).getDestino())) {
                     podeAdd = false;
                 }
             }
-            if(podeAdd){
+            if (podeAdd) {
                 destinosList.add(listaSul.get(i));
             }
         }
-        
+
         System.out.println(destinosList);
         destinosbox.removeAllItems();
-        for(int i = 0; i < destinosList.size(); i++){
+        for (int i = 0; i < destinosList.size(); i++) {
             destinosbox.addItem(destinosList.get(i).getDestino());
         }
     }
@@ -176,6 +181,7 @@ public class MenuUsuario extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         listaTrechosCompletos = new javax.swing.JList<>();
         comprarCompleto = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Menu do Usuário");
@@ -240,6 +246,8 @@ public class MenuUsuario extends javax.swing.JFrame {
             }
         });
 
+        jLabel4.setText("Resultados da Pesquisa");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -257,7 +265,7 @@ public class MenuUsuario extends javax.swing.JFrame {
                             .addComponent(jLabel3)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(destinosbox, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 284, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 465, Short.MAX_VALUE)
                                 .addComponent(pesquisar))))
                     .addComponent(jScrollPane2)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -271,7 +279,8 @@ public class MenuUsuario extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
-                            .addComponent(norte, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(norte, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -296,7 +305,9 @@ public class MenuUsuario extends javax.swing.JFrame {
                     .addComponent(origensbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(destinosbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pesquisar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(comprarCompleto)
@@ -316,7 +327,7 @@ public class MenuUsuario extends javax.swing.JFrame {
         } catch (RemoteException | NotBoundException ex) {
             Logger.getLogger(MenuUsuario.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }//GEN-LAST:event_norteActionPerformed
 
     private void centroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_centroActionPerformed
@@ -328,7 +339,7 @@ public class MenuUsuario extends javax.swing.JFrame {
         } catch (RemoteException | NotBoundException ex) {
             Logger.getLogger(MenuUsuario.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }//GEN-LAST:event_centroActionPerformed
 
     private void sulActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sulActionPerformed
@@ -340,19 +351,154 @@ public class MenuUsuario extends javax.swing.JFrame {
         } catch (RemoteException | NotBoundException ex) {
             Logger.getLogger(MenuUsuario.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }//GEN-LAST:event_sulActionPerformed
 
     private void pesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pesquisarActionPerformed
-        if(origensbox.getSelectedItem().toString().equals(destinosbox.getSelectedItem().toString())){
+        if (origensbox.getSelectedItem().toString().equals(destinosbox.getSelectedItem().toString())) {
             JOptionPane.showMessageDialog(null, "Origem e destino devem ser diferentes.");
+        } else {
+            listaTrechosCompletos.removeAll();
+            modelo2.removeAllElements();
+            // caso precise apenas de um trecho pra formar o caminho completo
+            boolean precisaUm = false;
+            for (int i = 0; i < listaNorte.size(); i++) {
+                if (origensbox.getSelectedItem().toString().equals(listaNorte.get(i).getOrigem())
+                        && destinosbox.getSelectedItem().toString().equals(listaNorte.get(i).getDestino())) {
+                    modelo2.addElement(listaNorte.get(i).toString());
+                    precisaUm = true;
+                }
+            }
+            for (int i = 0; i < listaCentro.size(); i++) {
+                if (origensbox.getSelectedItem().toString().equals(listaCentro.get(i).getOrigem())
+                        && destinosbox.getSelectedItem().toString().equals(listaCentro.get(i).getDestino())) {
+                    modelo2.addElement(listaCentro.get(i).toString());
+                    precisaUm = true;
+                }
+            }
+            for (int i = 0; i < listaSul.size(); i++) {
+                if (origensbox.getSelectedItem().toString().equals(listaSul.get(i).getOrigem())
+                        && destinosbox.getSelectedItem().toString().equals(listaSul.get(i).getDestino())) {
+                    modelo2.addElement(listaSul.get(i).toString());
+                    precisaUm = true;
+                }
+            }
+            if (!precisaUm) {
+                LinkedList<Bilhete> origensAux = new LinkedList<>();
+                LinkedList<Bilhete> interAux = new LinkedList<>();
+                LinkedList<Bilhete> destinosAux = new LinkedList<>();
+                //adicionando bilhetes com a origem selecionada
+                for (int i = 0; i < listaNorte.size(); i++) {
+                    if (listaNorte.get(i).getOrigem().equals(origensbox.getSelectedItem().toString())) {
+                        origensAux.add(listaNorte.get(i));
+                    }
+                }
+                for (int i = 0; i < listaCentro.size(); i++) {
+                    if (listaCentro.get(i).getOrigem().equals(origensbox.getSelectedItem().toString())) {
+                        origensAux.add(listaCentro.get(i));
+                    }
+                }
+                for (int i = 0; i < listaSul.size(); i++) {
+                    if (listaSul.get(i).getOrigem().equals(origensbox.getSelectedItem().toString())) {
+                        origensAux.add(listaSul.get(i));
+                    }
+                }
+                //adicionando bilhetes com o destino selecionada
+                for (int i = 0; i < listaNorte.size(); i++) {
+                    if (listaNorte.get(i).getDestino().equals(destinosbox.getSelectedItem().toString())) {
+                        destinosAux.add(listaNorte.get(i));
+                    }
+                }
+                for (int i = 0; i < listaCentro.size(); i++) {
+                    if (listaCentro.get(i).getDestino().equals(destinosbox.getSelectedItem().toString())) {
+                        destinosAux.add(listaCentro.get(i));
+                    }
+                }
+                for (int i = 0; i < listaSul.size(); i++) {
+                    if (listaSul.get(i).getDestino().equals(destinosbox.getSelectedItem().toString())) {
+                        destinosAux.add(listaSul.get(i));
+                    }
+                }
+                //adicionando bilhetes intermediário do trecho
+                for (int i = 0; i < origensAux.size(); i++) {
+                    for (int j = 0; j < listaNorte.size(); j++) {
+                        if (origensAux.get(i).getDestino().equals(listaNorte.get(j).getOrigem())) {
+                            for (int k = 0; k < destinosAux.size(); k++) {
+                                if (destinosAux.get(k).getOrigem().equals(listaNorte.get(j).getDestino())) {
+                                    interAux.add(listaNorte.get(j));
+                                }
+                            }
+                        }
+                    }
+                }
+                for (int i = 0; i < origensAux.size(); i++) {
+                    for (int j = 0; j < listaCentro.size(); j++) {
+                        if (origensAux.get(i).getDestino().equals(listaCentro.get(j).getOrigem())) {
+                            for (int k = 0; k < destinosAux.size(); k++) {
+                                if (destinosAux.get(k).getOrigem().equals(listaCentro.get(j).getDestino())) {
+                                    interAux.add(listaCentro.get(j));
+                                }
+                            }
+                        }
+                    }
+                }
+                for (int i = 0; i < origensAux.size(); i++) {
+                    for (int j = 0; j < listaSul.size(); j++) {
+                        if (origensAux.get(i).getDestino().equals(listaSul.get(j).getOrigem())) {
+                            for (int k = 0; k < destinosAux.size(); k++) {
+                                if (destinosAux.get(k).getOrigem().equals(listaSul.get(j).getDestino())) {
+                                    interAux.add(listaSul.get(j));
+                                }
+                            }
+                        }
+                    }
+                }
+                for (int i = 0; i < origensAux.size(); i++) {
+                    for (int j = 0; j < listaSul.size(); j++) {
+                        if (origensAux.get(i).getDestino().equals(listaSul.get(j).getOrigem())) {
+                            for (int k = 0; k < destinosAux.size(); k++) {
+                                if (destinosAux.get(k).getOrigem().equals(listaSul.get(j).getDestino())) {
+                                    interAux.add(listaSul.get(j));
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (interAux.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Não foram encontrados trechos intermediários. Caso queira"
+                            + " escolha um trecho intermediário individualmente em alguma das companhias.");
+                    for (int i = 0; i < origensAux.size(); i++) {
+                        for (int j = 0; j < destinosAux.size(); j++) {
+                            modelo2.addElement("Trecho Inicial: " + origensAux.get(i).toString() + " - Trecho Final: "
+                                    + destinosAux.get(j).toString());
+                        }
+                    }
+                } else {
+                    for (int i = 0; i < origensAux.size(); i++) {
+                        for (int j = 0; j < destinosAux.size(); j++) {
+                            for (int k = 0; k < interAux.size(); k++) {
+                                modelo2.addElement("Trecho Inicial: " + origensAux.get(i).toString()
+                                        + " - Trecho Intermediário: " + interAux.get(k).toString()
+                                        + " - Trecho Final: " + destinosAux.get(j).toString());
+                            }
+
+                        }
+                    }
+                }
+                
+            }else{
+                JOptionPane.showMessageDialog(null, "Foi necessário apenas um trecho para essa viagem.");
+            }
+            //setando o modelo na interface
+            listaTrechosCompletos.setModel(modelo2);
         }
     }//GEN-LAST:event_pesquisarActionPerformed
 
     private void comprarCompletoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comprarCompletoActionPerformed
-        if(listaTrechosCompletos.getSelectedIndex() == -1){
+        if (listaTrechosCompletos.getSelectedIndex() == -1) {
             JOptionPane.showMessageDialog(null, "Escolha ao menos UM trecho.");
-        }
+        }listaTrechosCompletos.getS
     }//GEN-LAST:event_comprarCompletoActionPerformed
 
 
@@ -363,6 +509,7 @@ public class MenuUsuario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JList<String> listaBilhetes;
