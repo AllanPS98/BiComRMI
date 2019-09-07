@@ -110,7 +110,7 @@ public class Cliente {
      * @throws RemoteException
      * @throws NotBoundException 
      */
-    public boolean comprarBilhete(String cpf, int id, String ip, int porta, String data) throws RemoteException, NotBoundException{
+    public synchronized boolean comprarBilhete(String cpf, int id, String ip, int porta, String data) throws RemoteException, NotBoundException{
         Registry reg = LocateRegistry.getRegistry(ip, porta);
         UsuarioInterface usu = (UsuarioInterface) reg.lookup("UsuarioService");
         return usu.comprarBilhete(cpf, id,data);

@@ -35,6 +35,7 @@ public class MenuUsuario extends javax.swing.JFrame {
     DefaultListModel modelo2 = new DefaultListModel();
     public static int companhia = 0;
     public static MenuUsuario menu;
+    int qtdTrechos;
 
     public MenuUsuario() throws IOException, ClassNotFoundException, RemoteException, NotBoundException {
         initComponents();
@@ -355,6 +356,7 @@ public class MenuUsuario extends javax.swing.JFrame {
     }//GEN-LAST:event_sulActionPerformed
 
     private void pesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pesquisarActionPerformed
+        qtdTrechos = 0;
         if (origensbox.getSelectedItem().toString().equals(destinosbox.getSelectedItem().toString())) {
             JOptionPane.showMessageDialog(null, "Origem e destino devem ser diferentes.");
         } else {
@@ -453,42 +455,34 @@ public class MenuUsuario extends javax.swing.JFrame {
                         }
                     }
                 }
-                for (int i = 0; i < origensAux.size(); i++) {
-                    for (int j = 0; j < listaSul.size(); j++) {
-                        if (origensAux.get(i).getDestino().equals(listaSul.get(j).getOrigem())) {
-                            for (int k = 0; k < destinosAux.size(); k++) {
-                                if (destinosAux.get(k).getOrigem().equals(listaSul.get(j).getDestino())) {
-                                    interAux.add(listaSul.get(j));
-                                }
-                            }
-                        }
-                    }
-                }
 
                 if (interAux.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Não foram encontrados trechos intermediários. Caso queira"
                             + " escolha um trecho intermediário individualmente em alguma das companhias.");
                     for (int i = 0; i < origensAux.size(); i++) {
                         for (int j = 0; j < destinosAux.size(); j++) {
-                            modelo2.addElement("Trecho Inicial: " + origensAux.get(i).toString() + " - Trecho Final: "
+                            modelo2.addElement(origensAux.get(i).toString() + "-"
                                     + destinosAux.get(j).toString());
                         }
                     }
+                    qtdTrechos = 2;
                 } else {
                     for (int i = 0; i < origensAux.size(); i++) {
                         for (int j = 0; j < destinosAux.size(); j++) {
                             for (int k = 0; k < interAux.size(); k++) {
-                                modelo2.addElement("Trecho Inicial: " + origensAux.get(i).toString()
-                                        + " - Trecho Intermediário: " + interAux.get(k).toString()
-                                        + " - Trecho Final: " + destinosAux.get(j).toString());
+                                modelo2.addElement(origensAux.get(i).toString()
+                                        + "-" + interAux.get(k).toString()
+                                        + "-" + destinosAux.get(j).toString());
                             }
 
                         }
                     }
+                    qtdTrechos = 3;
                 }
-                
-            }else{
+
+            } else {
                 JOptionPane.showMessageDialog(null, "Foi necessário apenas um trecho para essa viagem.");
+                qtdTrechos = 1;
             }
             //setando o modelo na interface
             listaTrechosCompletos.setModel(modelo2);
@@ -498,6 +492,452 @@ public class MenuUsuario extends javax.swing.JFrame {
     private void comprarCompletoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comprarCompletoActionPerformed
         if (listaTrechosCompletos.getSelectedIndex() == -1) {
             JOptionPane.showMessageDialog(null, "Escolha ao menos UM trecho.");
+        } else {
+            String textoLista;
+            String textoBilhete1;
+            String textoBilhete2;
+            String textoBilhete3;
+            Bilhete b = null;
+            Bilhete b2 = null;
+            Bilhete b3 = null;
+            Cliente c = new Cliente();
+            boolean resultado = false;
+            int companhiaAux = 0;
+            int companhiaAux2 = 0;
+            int companhiaAux3 = 0;
+            switch (qtdTrechos) {
+                case 1:
+                    textoLista = listaTrechosCompletos.getSelectedValue();
+                    for (int i = 0; i < listaNorte.size(); i++) {
+                        if (listaNorte.get(i).toString().equals(textoLista)) {
+                            b = listaNorte.get(i);
+                            companhiaAux = 1;
+                            break;
+                        }
+                    }
+                    for (int i = 0; i < listaCentro.size(); i++) {
+                        if (listaCentro.get(i).toString().equals(textoLista)) {
+                            b = listaCentro.get(i);
+                            companhiaAux = 2;
+                            break;
+                        }
+                    }
+                    for (int i = 0; i < listaCentro.size(); i++) {
+                        if (listaCentro.get(i).toString().equals(textoLista)) {
+                            b = listaCentro.get(i);
+                            companhiaAux = 3;
+                            break;
+                        }
+                    }
+
+                    System.out.println(b);
+                    if (b != null) {
+                        switch (companhiaAux) {
+                            case 1: {
+                                try {
+                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_a, TelaInicial.porta_a,
+                                            b.getData());
+                                } catch (RemoteException | NotBoundException ex) {
+                                    Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                if (resultado) {
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + b.getId() + " comprado por " + b.getPreco() + " reais.");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
+                                }
+                            }
+                            break;
+                            case 2: {
+                                try {
+                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_b, TelaInicial.porta_b,
+                                            b.getData());
+                                } catch (RemoteException | NotBoundException ex) {
+                                    Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                if (resultado) {
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + b.getId() + " comprado por " + b.getPreco() + " reais.");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
+                                }
+                            }
+                            break;
+                            case 3: {
+                                try {
+                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_c, TelaInicial.porta_c,
+                                            b.getData());
+                                } catch (RemoteException | NotBoundException ex) {
+                                    Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                if (resultado) {
+                                    //
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + b.getId() + " comprado por " + b.getPreco() + " reais.");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
+                                }
+                            }
+                            break;
+                        }
+                    }
+                    break;
+                case 2:
+                    textoLista = listaTrechosCompletos.getSelectedValue();
+                    textoBilhete1 = textoLista.split("-")[0];
+                    textoBilhete2 = textoLista.split("-")[1];
+                    for (int i = 0; i < listaNorte.size(); i++) {
+                        if (listaNorte.get(i).toString().equals(textoBilhete1)) {
+                            b = listaNorte.get(i);
+                            companhiaAux = 1;
+                            
+                        }
+                        if (listaNorte.get(i).toString().equals(textoBilhete2)) {
+                            b2 = listaNorte.get(i);
+                            companhiaAux2 = 1;
+                            
+                        }
+                    }
+                    for (int i = 0; i < listaCentro.size(); i++) {
+                        if (listaCentro.get(i).toString().equals(textoBilhete1)) {
+                            b = listaCentro.get(i);
+                            companhiaAux = 2;
+                            
+                        }
+                        if (listaCentro.get(i).toString().equals(textoBilhete2)) {
+                            b2 = listaCentro.get(i);
+                            companhiaAux2 = 2;
+                            
+                        }
+                    }
+                    for (int i = 0; i < listaSul.size(); i++) {
+                        if (listaSul.get(i).toString().equals(textoBilhete1)) {
+                            b = listaSul.get(i);
+                            companhiaAux = 3;
+                            
+                        }
+                        if (listaSul.get(i).toString().equals(textoBilhete2)) {
+                            b2 = listaSul.get(i);
+                            companhiaAux2 = 3;
+                            
+                        }
+                    }
+                    resultado = false;
+                    if (b != null) {
+                        switch (companhiaAux) {
+                            case 1: {
+                                try {
+                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_a, TelaInicial.porta_a,
+                                            b.getData());
+                                } catch (RemoteException | NotBoundException ex) {
+                                    Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                if (resultado) {
+                                    //
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + b.getId() + " comprado por " + b.getPreco() + " reais.");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
+                                }
+                            }
+                            break;
+                            case 2: {
+                                try {
+                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_b, TelaInicial.porta_b,
+                                            b.getData());
+                                } catch (RemoteException | NotBoundException ex) {
+                                    Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                if (resultado) {
+                                    //
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + b.getId() + " comprado por " + b.getPreco() + " reais.");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
+                                }
+                            }
+                            break;
+                            case 3: {
+                                try {
+                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_c, TelaInicial.porta_c,
+                                            b.getData());
+                                } catch (RemoteException | NotBoundException ex) {
+                                    Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                if (resultado) {
+                                    //
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + b.getId() + " comprado por " + b.getPreco() + " reais.");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
+                                }
+                            }
+                            break;
+                        }
+                    }
+                    resultado = false;
+                    if (b2 != null) {
+                        System.out.println("entrou b2");
+                        switch (companhiaAux2) {
+                            case 1: {
+                                try {
+                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b2.getId(), TelaInicial.ip_a, TelaInicial.porta_a,
+                                            b2.getData());
+                                } catch (RemoteException | NotBoundException ex) {
+                                    Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                if (resultado) {
+                                    //
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + b2.getId() + " comprado por " + b2.getPreco() + " reais.");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
+                                }
+                            }
+                            break;
+                            case 2: {
+                                try {
+                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b2.getId(), TelaInicial.ip_b, TelaInicial.porta_b,
+                                            b2.getData());
+                                } catch (RemoteException | NotBoundException ex) {
+                                    Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                if (resultado) {
+                                    //
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + b2.getId() + " comprado por " + b2.getPreco() + " reais.");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
+                                }
+                            }
+                            break;
+                            case 3: {
+                                try {
+                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b2.getId(), TelaInicial.ip_c, TelaInicial.porta_c,
+                                            b2.getData());
+                                } catch (RemoteException | NotBoundException ex) {
+                                    Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                if (resultado) {
+                                    //
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + b2.getId() + " comprado por " + b2.getPreco() + " reais.");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
+                                }
+                            }
+                            break;
+                        }
+                    }
+
+                    break;
+                case 3:
+                    textoLista = listaTrechosCompletos.getSelectedValue();
+                    textoBilhete1 = textoLista.split("-")[0];
+                    textoBilhete2 = textoLista.split("-")[1];
+                    textoBilhete3 = textoLista.split("-")[2];
+                    System.out.println("ESSE É O B2: "+textoBilhete2);
+                    for (int i = 0; i < listaNorte.size(); i++) {
+                        if (listaNorte.get(i).toString().equals(textoBilhete1)) {
+                            b = listaNorte.get(i);
+                            companhiaAux = 1;
+                            
+                        }
+                        if (listaNorte.get(i).toString().equals(textoBilhete2)) {
+                            b2 = listaNorte.get(i);
+                            companhiaAux2 = 1;
+                            
+                        }
+                        if (listaNorte.get(i).toString().equals(textoBilhete3)) {
+                            b3 = listaNorte.get(i);
+                            companhiaAux3 = 1;
+                            
+                        }
+                    }
+                    for (int i = 0; i < listaCentro.size(); i++) {
+                        if (listaCentro.get(i).toString().equals(textoBilhete1)) {
+                            b = listaCentro.get(i);
+                            companhiaAux = 2;
+                            
+                        }
+                        if (listaCentro.get(i).toString().equals(textoBilhete2)) {
+                            b2 = listaCentro.get(i);
+                            companhiaAux2 = 2;
+                            
+                        }
+                        if (listaCentro.get(i).toString().equals(textoBilhete3)) {
+                            b3 = listaCentro.get(i);
+                            companhiaAux3 = 2;
+                            
+                        }
+                    }
+                    for (int i = 0; i < listaSul.size(); i++) {
+                        if (listaSul.get(i).toString().equals(textoBilhete1)) {
+                            b = listaSul.get(i);
+                            companhiaAux = 3;
+                            
+                        }
+                        if (listaSul.get(i).toString().equals(textoBilhete2)) {
+                            b2 = listaSul.get(i);
+                            companhiaAux2 = 3;
+                            
+                        }
+                        if (listaSul.get(i).toString().equals(textoBilhete3)) {
+                            b3 = listaSul.get(i);
+                            companhiaAux3 = 3;
+                        }
+                    }
+                    resultado = false;
+                    if (b != null) {
+                        switch (companhiaAux) {
+                            case 1: {
+                                try {
+                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_a, TelaInicial.porta_a,
+                                            b.getData());
+                                } catch (RemoteException | NotBoundException ex) {
+                                    Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                if (resultado) {
+                                    //
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + b.getId() + " comprado por " + b.getPreco() + " reais.");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
+                                }
+                            }
+                            break;
+                            case 2: {
+                                try {
+                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_b, TelaInicial.porta_b,
+                                            b.getData());
+                                } catch (RemoteException | NotBoundException ex) {
+                                    Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                if (resultado) {
+                                    //
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + b.getId() + " comprado por " + b.getPreco() + " reais.");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
+                                }
+                            }
+                            break;
+                            case 3: {
+                                try {
+                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_c, TelaInicial.porta_c,
+                                            b.getData());
+                                } catch (RemoteException | NotBoundException ex) {
+                                    Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                if (resultado) {
+                                    //
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + b.getId() + " comprado por " + b.getPreco() + " reais.");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
+                                }
+                            }
+                            break;
+                        }
+                    }
+                    resultado = false;
+                    if (b2 != null) {
+                        System.out.println("entrou b2");
+                        switch (companhiaAux2) {
+                            case 1: {
+                                try {
+                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b2.getId(), TelaInicial.ip_a, TelaInicial.porta_a,
+                                            b2.getData());
+                                } catch (RemoteException | NotBoundException ex) {
+                                    Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                if (resultado) {
+                                    //
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + b2.getId() + " comprado por " + b2.getPreco() + " reais.");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
+                                }
+                            }
+                            break;
+                            case 2: {
+                                try {
+                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b2.getId(), TelaInicial.ip_b, TelaInicial.porta_b,
+                                            b2.getData());
+                                } catch (RemoteException | NotBoundException ex) {
+                                    Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                if (resultado) {
+                                    //
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + b2.getId() + " comprado por " + b2.getPreco() + " reais.");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
+                                }
+                            }
+                            break;
+                            case 3: {
+                                try {
+                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b2.getId(), TelaInicial.ip_c, TelaInicial.porta_c,
+                                            b2.getData());
+                                } catch (RemoteException | NotBoundException ex) {
+                                    Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                if (resultado) {
+                                    //
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + b2.getId() + " comprado por " + b2.getPreco() + " reais.");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
+                                }
+                            }
+                            break;
+                        }
+                    }
+                    resultado = false;
+                    if (b3 != null) {
+                        System.out.println("entrou b3");
+                        switch (companhiaAux3) {
+                            case 1: {
+                                try {
+                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b3.getId(), TelaInicial.ip_a, TelaInicial.porta_a,
+                                            b3.getData());
+                                } catch (RemoteException | NotBoundException ex) {
+                                    Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                if (resultado) {
+                                    //
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + b3.getId() + " comprado por " + b3.getPreco() + " reais.");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
+                                }
+                            }
+                            break;
+                            case 2: {
+                                try {
+                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b3.getId(), TelaInicial.ip_b, TelaInicial.porta_b,
+                                            b3.getData());
+                                } catch (RemoteException | NotBoundException ex) {
+                                    Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                if (resultado) {
+                                    //
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + b3.getId() + " comprado por " + b3.getPreco() + " reais.");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
+                                }
+                            }
+                            break;
+                            case 3: {
+                                try {
+                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b3.getId(), TelaInicial.ip_c, TelaInicial.porta_c,
+                                            b3.getData());
+                                } catch (RemoteException | NotBoundException ex) {
+                                    Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                if (resultado) {
+                                    //
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + b3.getId() + " comprado por " + b3.getPreco() + " reais.");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
+                                }
+                            }
+                            break;
+                        }
+                    }
+                    break;
+            }
+            this.dispose();
+            try {
+                new MenuUsuario().setVisible(true);
+            } catch (IOException | ClassNotFoundException | NotBoundException ex) {
+                Logger.getLogger(MenuUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_comprarCompletoActionPerformed
 

@@ -139,6 +139,12 @@ public class UsuarioImpl extends UnicastRemoteObject implements UsuarioInterface
 
     @Override
     public synchronized boolean comprarBilhete(String cpf, int id, String data) throws RemoteException {
+        try {
+            lerArquivoSerial(PATH);
+        } catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(UsuarioImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         for(int i = 0; i < BilheteImpl.bilhetes.size(); i++){
             if(id == BilheteImpl.bilhetes.get(i).getId() && data.equals(BilheteImpl.bilhetes.get(i).getData())){
                 for(int j = 0; j < usuarios.size(); j++){
@@ -146,6 +152,7 @@ public class UsuarioImpl extends UnicastRemoteObject implements UsuarioInterface
                         usuarios.get(j).getBilhetesComprados().add(BilheteImpl.bilhetes.remove(i));
                         System.out.println("O bilhete "+ usuarios.get(j).getBilhetesComprados().getLast().getId()
                         + " foi comprado por " + usuarios.get(j).getNome());
+                        System.out.println("\n\n\n\n\nLista de bilhetes\n"+usuarios.get(j).getBilhetesComprados());
                         try {
                             escreverArquivoSerial(PATH, usuarios);
                             escreverArquivoSerial(PATH_BILHETES, BilheteImpl.bilhetes);
@@ -157,6 +164,7 @@ public class UsuarioImpl extends UnicastRemoteObject implements UsuarioInterface
                 }
             }
         }
+        
         return false;
     }
     
