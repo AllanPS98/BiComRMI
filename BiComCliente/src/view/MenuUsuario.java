@@ -498,7 +498,7 @@ public class MenuUsuario extends javax.swing.JFrame {
     private void comprarCompletoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comprarCompletoActionPerformed
         if (listaTrechosCompletos.getSelectedIndex() == -1) {
             JOptionPane.showMessageDialog(null, "Escolha ao menos UM trecho.");
-        }listaTrechosCompletos.getS
+        }
     }//GEN-LAST:event_comprarCompletoActionPerformed
 
 
