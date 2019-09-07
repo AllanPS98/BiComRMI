@@ -208,7 +208,8 @@ public class ListarBilhetes extends javax.swing.JFrame {
             switch (MenuUsuario.companhia) {
                 case 1: {
                     try {
-                        resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_a, TelaInicial.porta_a);
+                        resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_a, TelaInicial.porta_a
+                        , b.getData());
                     } catch (RemoteException | NotBoundException ex) {
                         Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -216,7 +217,8 @@ public class ListarBilhetes extends javax.swing.JFrame {
                 break;
                 case 2: {
                     try {
-                        resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_b, TelaInicial.porta_b);
+                        resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_b, TelaInicial.porta_b
+                        ,b.getData());
                     } catch (RemoteException | NotBoundException ex) {
                         Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -224,7 +226,8 @@ public class ListarBilhetes extends javax.swing.JFrame {
                 break;
                 case 3: {
                     try {
-                        resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_c, TelaInicial.porta_c);
+                        resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_c, TelaInicial.porta_c,
+                                b.getData());
                     } catch (RemoteException | NotBoundException ex) {
                         Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
                     }

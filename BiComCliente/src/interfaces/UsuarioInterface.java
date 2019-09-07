@@ -17,6 +17,6 @@ import model.Bilhete;
 public interface UsuarioInterface extends Remote{
     public String cadastroUsuario(String nome, String cpf, String senha, String regiao) throws RemoteException;
     public boolean loginUsuario(String cpf, String senha) throws RemoteException;
-    public boolean comprarBilhete(String cpf, int id) throws RemoteException;
+    public boolean comprarBilhete(String cpf, int id, String data) throws RemoteException;
     public LinkedList<Bilhete> listarBilhetes(String cpf) throws RemoteException;
 }

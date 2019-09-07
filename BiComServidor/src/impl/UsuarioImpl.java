@@ -138,9 +138,9 @@ public class UsuarioImpl extends UnicastRemoteObject implements UsuarioInterface
     }
 
     @Override
-    public boolean comprarBilhete(String cpf, int id) throws RemoteException {
+    public synchronized boolean comprarBilhete(String cpf, int id, String data) throws RemoteException {
         for(int i = 0; i < BilheteImpl.bilhetes.size(); i++){
-            if(id == BilheteImpl.bilhetes.get(i).getId()){
+            if(id == BilheteImpl.bilhetes.get(i).getId() && data.equals(BilheteImpl.bilhetes.get(i).getData())){
                 for(int j = 0; j < usuarios.size(); j++){
                     if(usuarios.get(j).getLogin().equals(cpf)){
                         usuarios.get(j).getBilhetesComprados().add(BilheteImpl.bilhetes.remove(i));
