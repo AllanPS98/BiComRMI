@@ -115,6 +115,7 @@ public class TelaServidor extends javax.swing.JFrame {
             } catch (RemoteException ex) {
                 Logger.getLogger(TelaServidor.class.getName()).log(Level.SEVERE, null, ex);
             }
+            this.dispose();
         }else if(centro.isSelected()){
             try {
                 s.startRMI();
@@ -123,6 +124,7 @@ public class TelaServidor extends javax.swing.JFrame {
             } catch (RemoteException ex) {
                 Logger.getLogger(TelaServidor.class.getName()).log(Level.SEVERE, null, ex);
             }
+            this.dispose();
         }else if(sul.isSelected()){
             try {
                 s.startRMI();
@@ -131,6 +133,7 @@ public class TelaServidor extends javax.swing.JFrame {
             } catch (RemoteException ex) {
                 Logger.getLogger(TelaServidor.class.getName()).log(Level.SEVERE, null, ex);
             }
+            this.dispose();
         }else{
             JOptionPane.showMessageDialog(null, "Selecione uma das opções.");
         }
@@ -162,7 +165,7 @@ public class TelaServidor extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(TelaServidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        //System.setProperty("java.rmi.server.hostname", "coloque aqui o IP da máquina");
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
