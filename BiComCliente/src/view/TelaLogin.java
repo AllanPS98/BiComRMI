@@ -25,7 +25,9 @@ public class TelaLogin extends javax.swing.JFrame {
     public static TelaLogin telaLogin;
     public static String loginAux;
     public static String senhaAux;
-
+    public static boolean compA = false;
+    public static boolean compB = false;
+    public static boolean compC = false;
     public TelaLogin() {
         initComponents();
     }
@@ -135,9 +137,9 @@ public class TelaLogin extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Preencha a senha.");
         } else {
             try {
-                boolean compA = c.login(login.getText(), senha.getText(), TelaInicial.ip_a, TelaInicial.porta_a);
-                boolean compB = c.login(login.getText(), senha.getText(), TelaInicial.ip_b, TelaInicial.porta_b);
-                boolean compC = c.login(login.getText(), senha.getText(), TelaInicial.ip_c, TelaInicial.porta_c);
+                compA = c.login(login.getText(), senha.getText(), TelaInicial.ip_a, TelaInicial.porta_a);
+                compB = c.login(login.getText(), senha.getText(), TelaInicial.ip_b, TelaInicial.porta_b);
+                compC =c.login(login.getText(), senha.getText(), TelaInicial.ip_c, TelaInicial.porta_c);
                 if (compA || compB || compC) {
                     
                     MenuUsuario.menu = new MenuUsuario();

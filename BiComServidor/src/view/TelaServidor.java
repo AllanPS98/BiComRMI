@@ -108,6 +108,7 @@ public class TelaServidor extends javax.swing.JFrame {
     private void startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startActionPerformed
         Servidor s = new Servidor();
         if(norte.isSelected()){
+            
             try {
                 s.startRMI();
                 JOptionPane.showMessageDialog(null, "Servidor do Norte - Nordeste iniciado.");
@@ -117,6 +118,7 @@ public class TelaServidor extends javax.swing.JFrame {
             }
             this.dispose();
         }else if(centro.isSelected()){
+            
             try {
                 s.startRMI();
                 JOptionPane.showMessageDialog(null, "Servidor do Centro-Oeste iniciado.");
@@ -126,6 +128,7 @@ public class TelaServidor extends javax.swing.JFrame {
             }
             this.dispose();
         }else if(sul.isSelected()){
+            
             try {
                 s.startRMI();
                 JOptionPane.showMessageDialog(null, "Servidor do Sul - Sudeste iniciado.");
@@ -165,7 +168,7 @@ public class TelaServidor extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(TelaServidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        //System.setProperty("java.rmi.server.hostname", "coloque aqui o IP da máquina");
+        System.setProperty("java.rmi.server.hostname", "172.16.103.3");
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

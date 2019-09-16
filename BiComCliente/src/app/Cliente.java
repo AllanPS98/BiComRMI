@@ -39,6 +39,7 @@ public class Cliente {
      */
     public String cadastrarUsuario(String nome, String cpf, String senha, String regiao, String ip, int porta) throws RemoteException, NotBoundException{
         Registry reg = LocateRegistry.getRegistry(ip, porta);
+        System.out.println(ip);
         UsuarioInterface usu = (UsuarioInterface) reg.lookup("UsuarioService");
         String resultado = usu.cadastroUsuario(nome, cpf, senha, regiao);
         return resultado;
@@ -55,6 +56,7 @@ public class Cliente {
      */
     public boolean login(String cpf, String senha, String ip, int porta) throws RemoteException, NotBoundException{
         Registry reg = LocateRegistry.getRegistry(ip, porta);
+        System.out.println(ip);
         UsuarioInterface usu = (UsuarioInterface) reg.lookup("UsuarioService");
         boolean resultado = usu.loginUsuario(cpf, senha);
         return resultado;
@@ -110,9 +112,15 @@ public class Cliente {
      * @throws RemoteException
      * @throws NotBoundException 
      */
-    public synchronized boolean comprarBilhete(String cpf, int id, String ip, int porta, String data) throws RemoteException, NotBoundException{
+    public synchronized Bilhete comprarBilhete(String cpf, int id, String ip, int porta, String data) throws RemoteException, NotBoundException{
         Registry reg = LocateRegistry.getRegistry(ip, porta);
         UsuarioInterface usu = (UsuarioInterface) reg.lookup("UsuarioService");
         return usu.comprarBilhete(cpf, id,data);
+    }
+    
+    public synchronized boolean salvarCompra(Bilhete b, String cpf, String ip, int porta) throws RemoteException, NotBoundException{
+        Registry reg = LocateRegistry.getRegistry(ip, porta);
+        UsuarioInterface usu = (UsuarioInterface) reg.lookup("UsuarioService");
+        return usu.salvarCompra(b, cpf);
     }
 }

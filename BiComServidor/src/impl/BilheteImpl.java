@@ -29,7 +29,7 @@ public class BilheteImpl extends UnicastRemoteObject implements BilheteInterface
 
     static final long serialVersionUID = 1L;
     static LinkedList<Bilhete> bilhetes = new LinkedList<>();
-    static String PATH = "dados\\bilhetes";
+    static String PATH = "dados//bilhetes";
 
     public BilheteImpl() throws RemoteException {
         super();

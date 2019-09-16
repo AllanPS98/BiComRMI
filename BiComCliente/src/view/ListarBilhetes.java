@@ -204,12 +204,21 @@ public class ListarBilhetes extends javax.swing.JFrame {
             Cliente c = new Cliente();
             Bilhete b = bilhetes.get(listaBilhetesCompanhia.getSelectedIndex());
             System.out.println(b);
+            Bilhete comprado = null;
             boolean resultado = false;
             switch (MenuUsuario.companhia) {
                 case 1: {
                     try {
-                        resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_a, TelaInicial.porta_a
+                        comprado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_a, TelaInicial.porta_a
                         , b.getData());
+                        if(TelaLogin.compA){
+                            resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_a, TelaInicial.porta_a);
+                        }else if(TelaLogin.compB){
+                            resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_b, TelaInicial.porta_b);
+                        }else{
+                            resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_c, TelaInicial.porta_c);
+                        }
+                        
                     } catch (RemoteException | NotBoundException ex) {
                         Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -217,8 +226,15 @@ public class ListarBilhetes extends javax.swing.JFrame {
                 break;
                 case 2: {
                     try {
-                        resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_b, TelaInicial.porta_b
-                        ,b.getData());
+                        comprado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_b, TelaInicial.porta_b
+                        , b.getData());
+                        if(TelaLogin.compA){
+                            resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_a, TelaInicial.porta_a);
+                        }else if(TelaLogin.compB){
+                            resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_b, TelaInicial.porta_b);
+                        }else{
+                            resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_c, TelaInicial.porta_c);
+                        }
                     } catch (RemoteException | NotBoundException ex) {
                         Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -226,8 +242,15 @@ public class ListarBilhetes extends javax.swing.JFrame {
                 break;
                 case 3: {
                     try {
-                        resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_c, TelaInicial.porta_c,
-                                b.getData());
+                        comprado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_c, TelaInicial.porta_c
+                        , b.getData());
+                        if(TelaLogin.compA){
+                            resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_a, TelaInicial.porta_a);
+                        }else if(TelaLogin.compB){
+                            resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_b, TelaInicial.porta_b);
+                        }else{
+                            resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_c, TelaInicial.porta_c);
+                        }
                     } catch (RemoteException | NotBoundException ex) {
                         Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -238,7 +261,7 @@ public class ListarBilhetes extends javax.swing.JFrame {
                 bilhetes.remove(listaBilhetesCompanhia.getSelectedIndex());
                 modelo.remove(listaBilhetesCompanhia.getSelectedIndex());
                 listaBilhetesCompanhia.setModel(modelo);
-                JOptionPane.showMessageDialog(null, "Bilhete " + b.getId() + " comprado por " + b.getPreco() + " reais.");
+                JOptionPane.showMessageDialog(null, "Bilhete " + comprado.getId() + " comprado por " + comprado.getPreco() + " reais.");
             } else {
                 JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
             }

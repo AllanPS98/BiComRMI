@@ -47,14 +47,19 @@ public class MenuUsuario extends javax.swing.JFrame {
         listaTrechosCompletos.removeAll();
         modelo2.removeAllElements();
         listaTrechosCompletos.setModel(modelo2);
-        meusBilhetes = c.listarBilhetesComprados(TelaLogin.loginAux, TelaInicial.ip_a, TelaInicial.porta_a);
-        if (meusBilhetes.isEmpty()) {
+
+        if (TelaLogin.compA) {
+            System.out.println("pegou o histórico em A");
+            meusBilhetes = c.listarBilhetesComprados(TelaLogin.loginAux, TelaInicial.ip_a, TelaInicial.porta_a);
+        } else if (TelaLogin.compB) {
+            System.out.println("pegou o histórico em B");
             meusBilhetes = c.listarBilhetesComprados(TelaLogin.loginAux, TelaInicial.ip_b, TelaInicial.porta_b);
-            if (meusBilhetes.isEmpty()) {
-                meusBilhetes = c.listarBilhetesComprados(TelaLogin.loginAux, TelaInicial.ip_c, TelaInicial.porta_c);
-            }
+        } else {
+            System.out.println("pegou o histórico em C");
+            meusBilhetes = c.listarBilhetesComprados(TelaLogin.loginAux, TelaInicial.ip_c, TelaInicial.porta_c);
         }
-        if (!meusBilhetes.isEmpty()) {
+        
+        if (meusBilhetes != null) {
             System.out.println("Os bilhetes existem");
             listaBilhetes.removeAll();
             if (!meusBilhetes.isEmpty()) {
@@ -505,6 +510,7 @@ public class MenuUsuario extends javax.swing.JFrame {
             int companhiaAux = 0;
             int companhiaAux2 = 0;
             int companhiaAux3 = 0;
+            Bilhete comprado = null;
             switch (qtdTrechos) {
                 case 1:
                     textoLista = listaTrechosCompletos.getSelectedValue();
@@ -522,9 +528,9 @@ public class MenuUsuario extends javax.swing.JFrame {
                             break;
                         }
                     }
-                    for (int i = 0; i < listaCentro.size(); i++) {
-                        if (listaCentro.get(i).toString().equals(textoLista)) {
-                            b = listaCentro.get(i);
+                    for (int i = 0; i < listaSul.size(); i++) {
+                        if (listaSul.get(i).toString().equals(textoLista)) {
+                            b = listaSul.get(i);
                             companhiaAux = 3;
                             break;
                         }
@@ -535,13 +541,20 @@ public class MenuUsuario extends javax.swing.JFrame {
                         switch (companhiaAux) {
                             case 1: {
                                 try {
-                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_a, TelaInicial.porta_a,
+                                    comprado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_a, TelaInicial.porta_a,
                                             b.getData());
+                                    if (TelaLogin.compA) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_a, TelaInicial.porta_a);
+                                    } else if (TelaLogin.compB) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_b, TelaInicial.porta_b);
+                                    } else {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_c, TelaInicial.porta_c);
+                                    }
                                 } catch (RemoteException | NotBoundException ex) {
                                     Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                                 if (resultado) {
-                                    JOptionPane.showMessageDialog(null, "Bilhete " + b.getId() + " comprado por " + b.getPreco() + " reais.");
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + comprado.getId() + " comprado por " + comprado.getPreco() + " reais.");
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
                                 }
@@ -549,13 +562,20 @@ public class MenuUsuario extends javax.swing.JFrame {
                             break;
                             case 2: {
                                 try {
-                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_b, TelaInicial.porta_b,
+                                    comprado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_b, TelaInicial.porta_b,
                                             b.getData());
+                                    if (TelaLogin.compA) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_a, TelaInicial.porta_a);
+                                    } else if (TelaLogin.compB) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_b, TelaInicial.porta_b);
+                                    } else {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_c, TelaInicial.porta_c);
+                                    }
                                 } catch (RemoteException | NotBoundException ex) {
                                     Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                                 if (resultado) {
-                                    JOptionPane.showMessageDialog(null, "Bilhete " + b.getId() + " comprado por " + b.getPreco() + " reais.");
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + comprado.getId() + " comprado por " + comprado.getPreco() + " reais.");
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
                                 }
@@ -563,14 +583,21 @@ public class MenuUsuario extends javax.swing.JFrame {
                             break;
                             case 3: {
                                 try {
-                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_c, TelaInicial.porta_c,
+                                    comprado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_c, TelaInicial.porta_c,
                                             b.getData());
+                                    if (TelaLogin.compA) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_a, TelaInicial.porta_a);
+                                    } else if (TelaLogin.compB) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_b, TelaInicial.porta_b);
+                                    } else {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_c, TelaInicial.porta_c);
+                                    }
                                 } catch (RemoteException | NotBoundException ex) {
                                     Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                                 if (resultado) {
                                     //
-                                    JOptionPane.showMessageDialog(null, "Bilhete " + b.getId() + " comprado por " + b.getPreco() + " reais.");
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + comprado.getId() + " comprado por " + comprado.getPreco() + " reais.");
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
                                 }
@@ -587,36 +614,36 @@ public class MenuUsuario extends javax.swing.JFrame {
                         if (listaNorte.get(i).toString().equals(textoBilhete1)) {
                             b = listaNorte.get(i);
                             companhiaAux = 1;
-                            
+
                         }
                         if (listaNorte.get(i).toString().equals(textoBilhete2)) {
                             b2 = listaNorte.get(i);
                             companhiaAux2 = 1;
-                            
+
                         }
                     }
                     for (int i = 0; i < listaCentro.size(); i++) {
                         if (listaCentro.get(i).toString().equals(textoBilhete1)) {
                             b = listaCentro.get(i);
                             companhiaAux = 2;
-                            
+
                         }
                         if (listaCentro.get(i).toString().equals(textoBilhete2)) {
                             b2 = listaCentro.get(i);
                             companhiaAux2 = 2;
-                            
+
                         }
                     }
                     for (int i = 0; i < listaSul.size(); i++) {
                         if (listaSul.get(i).toString().equals(textoBilhete1)) {
                             b = listaSul.get(i);
                             companhiaAux = 3;
-                            
+
                         }
                         if (listaSul.get(i).toString().equals(textoBilhete2)) {
                             b2 = listaSul.get(i);
                             companhiaAux2 = 3;
-                            
+
                         }
                     }
                     resultado = false;
@@ -624,14 +651,21 @@ public class MenuUsuario extends javax.swing.JFrame {
                         switch (companhiaAux) {
                             case 1: {
                                 try {
-                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_a, TelaInicial.porta_a,
+                                    comprado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_a, TelaInicial.porta_a,
                                             b.getData());
+                                    if (TelaLogin.compA) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_a, TelaInicial.porta_a);
+                                    } else if (TelaLogin.compB) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_b, TelaInicial.porta_b);
+                                    } else {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_c, TelaInicial.porta_c);
+                                    }
                                 } catch (RemoteException | NotBoundException ex) {
                                     Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                                 if (resultado) {
                                     //
-                                    JOptionPane.showMessageDialog(null, "Bilhete " + b.getId() + " comprado por " + b.getPreco() + " reais.");
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + comprado.getId() + " comprado por " + comprado.getPreco() + " reais.");
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
                                 }
@@ -639,14 +673,21 @@ public class MenuUsuario extends javax.swing.JFrame {
                             break;
                             case 2: {
                                 try {
-                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_b, TelaInicial.porta_b,
+                                    comprado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_b, TelaInicial.porta_b,
                                             b.getData());
+                                    if (TelaLogin.compA) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_a, TelaInicial.porta_a);
+                                    } else if (TelaLogin.compB) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_b, TelaInicial.porta_b);
+                                    } else {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_c, TelaInicial.porta_c);
+                                    }
                                 } catch (RemoteException | NotBoundException ex) {
                                     Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                                 if (resultado) {
                                     //
-                                    JOptionPane.showMessageDialog(null, "Bilhete " + b.getId() + " comprado por " + b.getPreco() + " reais.");
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + comprado.getId() + " comprado por " + comprado.getPreco() + " reais.");
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
                                 }
@@ -654,14 +695,21 @@ public class MenuUsuario extends javax.swing.JFrame {
                             break;
                             case 3: {
                                 try {
-                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_c, TelaInicial.porta_c,
+                                    comprado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_c, TelaInicial.porta_c,
                                             b.getData());
+                                    if (TelaLogin.compA) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_a, TelaInicial.porta_a);
+                                    } else if (TelaLogin.compB) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_b, TelaInicial.porta_b);
+                                    } else {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_c, TelaInicial.porta_c);
+                                    }
                                 } catch (RemoteException | NotBoundException ex) {
                                     Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                                 if (resultado) {
                                     //
-                                    JOptionPane.showMessageDialog(null, "Bilhete " + b.getId() + " comprado por " + b.getPreco() + " reais.");
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + comprado.getId() + " comprado por " + comprado.getPreco() + " reais.");
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
                                 }
@@ -675,14 +723,21 @@ public class MenuUsuario extends javax.swing.JFrame {
                         switch (companhiaAux2) {
                             case 1: {
                                 try {
-                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b2.getId(), TelaInicial.ip_a, TelaInicial.porta_a,
+                                    comprado = c.comprarBilhete(TelaLogin.loginAux, b2.getId(), TelaInicial.ip_a, TelaInicial.porta_a,
                                             b2.getData());
+                                    if (TelaLogin.compA) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_a, TelaInicial.porta_a);
+                                    } else if (TelaLogin.compB) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_b, TelaInicial.porta_b);
+                                    } else {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_c, TelaInicial.porta_c);
+                                    }
                                 } catch (RemoteException | NotBoundException ex) {
                                     Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                                 if (resultado) {
                                     //
-                                    JOptionPane.showMessageDialog(null, "Bilhete " + b2.getId() + " comprado por " + b2.getPreco() + " reais.");
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + comprado.getId() + " comprado por " + comprado.getPreco() + " reais.");
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
                                 }
@@ -690,14 +745,21 @@ public class MenuUsuario extends javax.swing.JFrame {
                             break;
                             case 2: {
                                 try {
-                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b2.getId(), TelaInicial.ip_b, TelaInicial.porta_b,
+                                    comprado = c.comprarBilhete(TelaLogin.loginAux, b2.getId(), TelaInicial.ip_b, TelaInicial.porta_b,
                                             b2.getData());
+                                    if (TelaLogin.compA) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_a, TelaInicial.porta_a);
+                                    } else if (TelaLogin.compB) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_b, TelaInicial.porta_b);
+                                    } else {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_c, TelaInicial.porta_c);
+                                    }
                                 } catch (RemoteException | NotBoundException ex) {
                                     Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                                 if (resultado) {
                                     //
-                                    JOptionPane.showMessageDialog(null, "Bilhete " + b2.getId() + " comprado por " + b2.getPreco() + " reais.");
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + comprado.getId() + " comprado por " + comprado.getPreco() + " reais.");
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
                                 }
@@ -705,14 +767,21 @@ public class MenuUsuario extends javax.swing.JFrame {
                             break;
                             case 3: {
                                 try {
-                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b2.getId(), TelaInicial.ip_c, TelaInicial.porta_c,
+                                    comprado = c.comprarBilhete(TelaLogin.loginAux, b2.getId(), TelaInicial.ip_c, TelaInicial.porta_c,
                                             b2.getData());
+                                    if (TelaLogin.compA) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_a, TelaInicial.porta_a);
+                                    } else if (TelaLogin.compB) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_b, TelaInicial.porta_b);
+                                    } else {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_c, TelaInicial.porta_c);
+                                    }
                                 } catch (RemoteException | NotBoundException ex) {
                                     Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                                 if (resultado) {
                                     //
-                                    JOptionPane.showMessageDialog(null, "Bilhete " + b2.getId() + " comprado por " + b2.getPreco() + " reais.");
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + comprado.getId() + " comprado por " + comprado.getPreco() + " reais.");
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
                                 }
@@ -727,51 +796,51 @@ public class MenuUsuario extends javax.swing.JFrame {
                     textoBilhete1 = textoLista.split("-")[0];
                     textoBilhete2 = textoLista.split("-")[1];
                     textoBilhete3 = textoLista.split("-")[2];
-                    System.out.println("ESSE É O B2: "+textoBilhete2);
+                    System.out.println("ESSE É O B2: " + textoBilhete2);
                     for (int i = 0; i < listaNorte.size(); i++) {
                         if (listaNorte.get(i).toString().equals(textoBilhete1)) {
                             b = listaNorte.get(i);
                             companhiaAux = 1;
-                            
+
                         }
                         if (listaNorte.get(i).toString().equals(textoBilhete2)) {
                             b2 = listaNorte.get(i);
                             companhiaAux2 = 1;
-                            
+
                         }
                         if (listaNorte.get(i).toString().equals(textoBilhete3)) {
                             b3 = listaNorte.get(i);
                             companhiaAux3 = 1;
-                            
+
                         }
                     }
                     for (int i = 0; i < listaCentro.size(); i++) {
                         if (listaCentro.get(i).toString().equals(textoBilhete1)) {
                             b = listaCentro.get(i);
                             companhiaAux = 2;
-                            
+
                         }
                         if (listaCentro.get(i).toString().equals(textoBilhete2)) {
                             b2 = listaCentro.get(i);
                             companhiaAux2 = 2;
-                            
+
                         }
                         if (listaCentro.get(i).toString().equals(textoBilhete3)) {
                             b3 = listaCentro.get(i);
                             companhiaAux3 = 2;
-                            
+
                         }
                     }
                     for (int i = 0; i < listaSul.size(); i++) {
                         if (listaSul.get(i).toString().equals(textoBilhete1)) {
                             b = listaSul.get(i);
                             companhiaAux = 3;
-                            
+
                         }
                         if (listaSul.get(i).toString().equals(textoBilhete2)) {
                             b2 = listaSul.get(i);
                             companhiaAux2 = 3;
-                            
+
                         }
                         if (listaSul.get(i).toString().equals(textoBilhete3)) {
                             b3 = listaSul.get(i);
@@ -783,14 +852,21 @@ public class MenuUsuario extends javax.swing.JFrame {
                         switch (companhiaAux) {
                             case 1: {
                                 try {
-                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_a, TelaInicial.porta_a,
+                                    comprado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_a, TelaInicial.porta_a,
                                             b.getData());
+                                    if (TelaLogin.compA) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_a, TelaInicial.porta_a);
+                                    } else if (TelaLogin.compB) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_b, TelaInicial.porta_b);
+                                    } else {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_c, TelaInicial.porta_c);
+                                    }
                                 } catch (RemoteException | NotBoundException ex) {
                                     Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                                 if (resultado) {
                                     //
-                                    JOptionPane.showMessageDialog(null, "Bilhete " + b.getId() + " comprado por " + b.getPreco() + " reais.");
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + comprado.getId() + " comprado por " + comprado.getPreco() + " reais.");
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
                                 }
@@ -798,14 +874,21 @@ public class MenuUsuario extends javax.swing.JFrame {
                             break;
                             case 2: {
                                 try {
-                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_b, TelaInicial.porta_b,
+                                    comprado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_b, TelaInicial.porta_b,
                                             b.getData());
+                                    if (TelaLogin.compA) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_a, TelaInicial.porta_a);
+                                    } else if (TelaLogin.compB) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_b, TelaInicial.porta_b);
+                                    } else {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_c, TelaInicial.porta_c);
+                                    }
                                 } catch (RemoteException | NotBoundException ex) {
                                     Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                                 if (resultado) {
                                     //
-                                    JOptionPane.showMessageDialog(null, "Bilhete " + b.getId() + " comprado por " + b.getPreco() + " reais.");
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + comprado.getId() + " comprado por " + comprado.getPreco() + " reais.");
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
                                 }
@@ -813,14 +896,21 @@ public class MenuUsuario extends javax.swing.JFrame {
                             break;
                             case 3: {
                                 try {
-                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_c, TelaInicial.porta_c,
+                                    comprado = c.comprarBilhete(TelaLogin.loginAux, b.getId(), TelaInicial.ip_c, TelaInicial.porta_c,
                                             b.getData());
+                                    if (TelaLogin.compA) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_a, TelaInicial.porta_a);
+                                    } else if (TelaLogin.compB) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_b, TelaInicial.porta_b);
+                                    } else {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_c, TelaInicial.porta_c);
+                                    }
                                 } catch (RemoteException | NotBoundException ex) {
                                     Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                                 if (resultado) {
                                     //
-                                    JOptionPane.showMessageDialog(null, "Bilhete " + b.getId() + " comprado por " + b.getPreco() + " reais.");
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + comprado.getId() + " comprado por " + comprado.getPreco() + " reais.");
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
                                 }
@@ -834,14 +924,21 @@ public class MenuUsuario extends javax.swing.JFrame {
                         switch (companhiaAux2) {
                             case 1: {
                                 try {
-                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b2.getId(), TelaInicial.ip_a, TelaInicial.porta_a,
+                                    comprado = c.comprarBilhete(TelaLogin.loginAux, b2.getId(), TelaInicial.ip_a, TelaInicial.porta_a,
                                             b2.getData());
+                                    if (TelaLogin.compA) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_a, TelaInicial.porta_a);
+                                    } else if (TelaLogin.compB) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_b, TelaInicial.porta_b);
+                                    } else {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_c, TelaInicial.porta_c);
+                                    }
                                 } catch (RemoteException | NotBoundException ex) {
                                     Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                                 if (resultado) {
                                     //
-                                    JOptionPane.showMessageDialog(null, "Bilhete " + b2.getId() + " comprado por " + b2.getPreco() + " reais.");
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + comprado.getId() + " comprado por " + comprado.getPreco() + " reais.");
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
                                 }
@@ -849,14 +946,21 @@ public class MenuUsuario extends javax.swing.JFrame {
                             break;
                             case 2: {
                                 try {
-                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b2.getId(), TelaInicial.ip_b, TelaInicial.porta_b,
+                                    comprado = c.comprarBilhete(TelaLogin.loginAux, b2.getId(), TelaInicial.ip_b, TelaInicial.porta_b,
                                             b2.getData());
+                                    if (TelaLogin.compA) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_a, TelaInicial.porta_a);
+                                    } else if (TelaLogin.compB) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_b, TelaInicial.porta_b);
+                                    } else {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_c, TelaInicial.porta_c);
+                                    }
                                 } catch (RemoteException | NotBoundException ex) {
                                     Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                                 if (resultado) {
                                     //
-                                    JOptionPane.showMessageDialog(null, "Bilhete " + b2.getId() + " comprado por " + b2.getPreco() + " reais.");
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + comprado.getId() + " comprado por " + comprado.getPreco() + " reais.");
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
                                 }
@@ -864,14 +968,21 @@ public class MenuUsuario extends javax.swing.JFrame {
                             break;
                             case 3: {
                                 try {
-                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b2.getId(), TelaInicial.ip_c, TelaInicial.porta_c,
+                                    comprado = c.comprarBilhete(TelaLogin.loginAux, b2.getId(), TelaInicial.ip_c, TelaInicial.porta_c,
                                             b2.getData());
+                                    if (TelaLogin.compA) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_a, TelaInicial.porta_a);
+                                    } else if (TelaLogin.compB) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_b, TelaInicial.porta_b);
+                                    } else {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_c, TelaInicial.porta_c);
+                                    }
                                 } catch (RemoteException | NotBoundException ex) {
                                     Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                                 if (resultado) {
                                     //
-                                    JOptionPane.showMessageDialog(null, "Bilhete " + b2.getId() + " comprado por " + b2.getPreco() + " reais.");
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + comprado.getId() + " comprado por " + comprado.getPreco() + " reais.");
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
                                 }
@@ -885,14 +996,21 @@ public class MenuUsuario extends javax.swing.JFrame {
                         switch (companhiaAux3) {
                             case 1: {
                                 try {
-                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b3.getId(), TelaInicial.ip_a, TelaInicial.porta_a,
+                                    comprado = c.comprarBilhete(TelaLogin.loginAux, b3.getId(), TelaInicial.ip_a, TelaInicial.porta_a,
                                             b3.getData());
+                                    if (TelaLogin.compA) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_a, TelaInicial.porta_a);
+                                    } else if (TelaLogin.compB) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_b, TelaInicial.porta_b);
+                                    } else {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_c, TelaInicial.porta_c);
+                                    }
                                 } catch (RemoteException | NotBoundException ex) {
                                     Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                                 if (resultado) {
                                     //
-                                    JOptionPane.showMessageDialog(null, "Bilhete " + b3.getId() + " comprado por " + b3.getPreco() + " reais.");
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + comprado.getId() + " comprado por " + comprado.getPreco() + " reais.");
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
                                 }
@@ -900,14 +1018,21 @@ public class MenuUsuario extends javax.swing.JFrame {
                             break;
                             case 2: {
                                 try {
-                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b3.getId(), TelaInicial.ip_b, TelaInicial.porta_b,
+                                    comprado = c.comprarBilhete(TelaLogin.loginAux, b3.getId(), TelaInicial.ip_b, TelaInicial.porta_b,
                                             b3.getData());
+                                    if (TelaLogin.compA) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_a, TelaInicial.porta_a);
+                                    } else if (TelaLogin.compB) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_b, TelaInicial.porta_b);
+                                    } else {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_c, TelaInicial.porta_c);
+                                    }
                                 } catch (RemoteException | NotBoundException ex) {
                                     Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                                 if (resultado) {
                                     //
-                                    JOptionPane.showMessageDialog(null, "Bilhete " + b3.getId() + " comprado por " + b3.getPreco() + " reais.");
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + comprado.getId() + " comprado por " + comprado.getPreco() + " reais.");
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
                                 }
@@ -915,14 +1040,21 @@ public class MenuUsuario extends javax.swing.JFrame {
                             break;
                             case 3: {
                                 try {
-                                    resultado = c.comprarBilhete(TelaLogin.loginAux, b3.getId(), TelaInicial.ip_c, TelaInicial.porta_c,
+                                    comprado = c.comprarBilhete(TelaLogin.loginAux, b3.getId(), TelaInicial.ip_c, TelaInicial.porta_c,
                                             b3.getData());
+                                    if (TelaLogin.compA) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_a, TelaInicial.porta_a);
+                                    } else if (TelaLogin.compB) {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_b, TelaInicial.porta_b);
+                                    } else {
+                                        resultado = c.salvarCompra(comprado, TelaLogin.loginAux, TelaInicial.ip_c, TelaInicial.porta_c);
+                                    }
                                 } catch (RemoteException | NotBoundException ex) {
                                     Logger.getLogger(ListarBilhetes.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                                 if (resultado) {
                                     //
-                                    JOptionPane.showMessageDialog(null, "Bilhete " + b3.getId() + " comprado por " + b3.getPreco() + " reais.");
+                                    JOptionPane.showMessageDialog(null, "Bilhete " + comprado.getId() + " comprado por " + comprado.getPreco() + " reais.");
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Erro ao comprar bilhete.");
                                 }

@@ -25,19 +25,23 @@ import model.Usuario;
  * @author User
  */
 public class UsuarioImpl extends UnicastRemoteObject implements UsuarioInterface {
+
     static final long serialVersionUID = 1L;
     LinkedList<Usuario> usuarios = new LinkedList<>();
-    String PATH = "dados\\usuarios";
-    String PATH_BILHETES = "dados\\bilhetes";
-    public UsuarioImpl() throws RemoteException{
+    static String PATH = "dados//usuarios";
+    static String PATH_BILHETES = "dados//bilhetes";
+
+    public UsuarioImpl() throws RemoteException {
         super();
     }
+
     /**
      * Método que armazena os dados em um arquivo
+     *
      * @param nome
      * @param obj
      * @throws FileNotFoundException
-     * @throws IOException 
+     * @throws IOException
      */
     private void escreverArquivoSerial(String nome, Object obj) throws FileNotFoundException, IOException {
         //Classe responsavel por inserir os objetos
@@ -52,12 +56,14 @@ public class UsuarioImpl extends UnicastRemoteObject implements UsuarioInterface
             arquivo.flush();
         }
     }
+
     /**
      * Método que ler os dados do arquivo
+     *
      * @param nome
      * @throws FileNotFoundException
      * @throws IOException
-     * @throws ClassNotFoundException 
+     * @throws ClassNotFoundException
      */
     public void lerArquivoSerial(String nome) throws FileNotFoundException, IOException, ClassNotFoundException {
         Object obj;
@@ -75,7 +81,7 @@ public class UsuarioImpl extends UnicastRemoteObject implements UsuarioInterface
         }
 
     }
-    
+
     @Override
     public boolean loginUsuario(String cpf, String senha) throws RemoteException {
         try {
@@ -83,16 +89,14 @@ public class UsuarioImpl extends UnicastRemoteObject implements UsuarioInterface
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(UsuarioImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        for(int i = 0; i < usuarios.size(); i++){
-            if(cpf.equals(usuarios.get(i).getLogin()) && senha.equals(usuarios.get(i).getSenha())){
+        for (int i = 0; i < usuarios.size(); i++) {
+            if (cpf.equals(usuarios.get(i).getLogin()) && senha.equals(usuarios.get(i).getSenha())) {
                 System.out.println("O usuário " + usuarios.get(i).getNome() + " está logado.");
                 return true;
             }
         }
         return false;
     }
-
-    
 
     @Override
     public String cadastroUsuario(String nome, String cpf, String senha, String regiao) throws RemoteException {
@@ -102,17 +106,17 @@ public class UsuarioImpl extends UnicastRemoteObject implements UsuarioInterface
             Logger.getLogger(UsuarioImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         boolean achouIgual = false;
-        for(int i = 0; i < usuarios.size(); i++){
-            if(usuarios.get(i).getLogin().equals(cpf)){
+        for (int i = 0; i < usuarios.size(); i++) {
+            if (usuarios.get(i).getLogin().equals(cpf)) {
                 achouIgual = true;
             }
         }
-        if(!achouIgual){
+        if (!achouIgual) {
             try {
-                Usuario u = new Usuario(nome,cpf,senha, regiao);
+                Usuario u = new Usuario(nome, cpf, senha, regiao);
                 usuarios.add(u);
                 System.out.println("O usuário " + u.getNome() + " está cadastrado.");
-                escreverArquivoSerial(PATH,usuarios);
+                escreverArquivoSerial(PATH, usuarios);
             } catch (IOException ex) {
                 Logger.getLogger(UsuarioImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -120,14 +124,13 @@ public class UsuarioImpl extends UnicastRemoteObject implements UsuarioInterface
         }
         return "Já existe alguém com esse CPF.";
     }
-    
 
     @Override
     public LinkedList<Bilhete> listarBilhetes(String cpf) throws RemoteException {
         try {
             lerArquivoSerial(PATH);
-            for(int i = 0; i < usuarios.size(); i++){
-                if(usuarios.get(i).getLogin().equals(cpf)){
+            for (int i = 0; i < usuarios.size(); i++) {
+                if (usuarios.get(i).getLogin().equals(cpf)) {
                     return usuarios.get(i).getBilhetesComprados();
                 }
             }
@@ -138,35 +141,42 @@ public class UsuarioImpl extends UnicastRemoteObject implements UsuarioInterface
     }
 
     @Override
-    public synchronized boolean comprarBilhete(String cpf, int id, String data) throws RemoteException {
+    public synchronized Bilhete comprarBilhete(String cpf, int id, String data) throws RemoteException {
+
+        for (int i = 0; i < BilheteImpl.bilhetes.size(); i++) {
+            if (id == BilheteImpl.bilhetes.get(i).getId() && data.equals(BilheteImpl.bilhetes.get(i).getData())) {
+                Bilhete comprado = BilheteImpl.bilhetes.remove(i);
+                try {
+                    escreverArquivoSerial(PATH_BILHETES, BilheteImpl.bilhetes);
+                } catch (IOException ex) {
+                    Logger.getLogger(UsuarioImpl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                System.out.println("Comprou Bilhete = "+ comprado.toString());
+                return comprado;
+            }
+        }
+        return null;
+
+    }
+
+    @Override
+    public boolean salvarCompra(Bilhete b, String cpf) throws RemoteException {
         try {
             lerArquivoSerial(PATH);
+            for(int i = 0; i < usuarios.size(); i++){
+                if(usuarios.get(i).getLogin().equals(cpf)){
+                    System.out.println("Salvando bilhete = " + b.toString());
+                    usuarios.get(i).getBilhetesComprados().add(b);
+                    escreverArquivoSerial(PATH, usuarios);
+                    return true;
+                }
+            }
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(UsuarioImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        for(int i = 0; i < BilheteImpl.bilhetes.size(); i++){
-            if(id == BilheteImpl.bilhetes.get(i).getId() && data.equals(BilheteImpl.bilhetes.get(i).getData())){
-                for(int j = 0; j < usuarios.size(); j++){
-                    if(usuarios.get(j).getLogin().equals(cpf)){
-                        usuarios.get(j).getBilhetesComprados().add(BilheteImpl.bilhetes.remove(i));
-                        System.out.println("O bilhete "+ usuarios.get(j).getBilhetesComprados().getLast().getId()
-                        + " foi comprado por " + usuarios.get(j).getNome());
-                        System.out.println("\n\n\n\n\nLista de bilhetes\n"+usuarios.get(j).getBilhetesComprados());
-                        try {
-                            escreverArquivoSerial(PATH, usuarios);
-                            escreverArquivoSerial(PATH_BILHETES, BilheteImpl.bilhetes);
-                        } catch (IOException ex) {
-                            Logger.getLogger(UsuarioImpl.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        return true;
-                    }
-                }
-            }
-        }
-        
         return false;
     }
     
     
+
 }
